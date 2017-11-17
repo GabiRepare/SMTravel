@@ -24,6 +24,7 @@ class Initialise extends ScheduledAction
 		model.output.setNumServed(0);
 		model.output.setNumLongWait(0);
 		model.output.setNumBusySignal(0);
+		model.output.setNumofArrival(0);
 
 	}
 	
