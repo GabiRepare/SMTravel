@@ -16,6 +16,7 @@ class Output
 	private int numLongWait;
 	private int numServed;
 	private int numBusySignal;
+	private int numofArrival;
 
 	public int getNumLongWait() {
 		return numLongWait;
@@ -34,6 +35,12 @@ class Output
 	}
 	public void setNumBusySignal(int numBusySignal) {
 		this.numBusySignal = numBusySignal;
+	}
+	public int getNumofArrival() {
+		return numofArrival;
+	}
+	public void setNumofArrival(int numofArrival) {
+		this.numofArrival = numofArrival;
 	}
 	
     // SSOVs
