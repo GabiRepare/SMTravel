@@ -10,8 +10,8 @@ This is the simulation project for the class CSI 4124
 
 ## Some useful commands:
     To create your branch:
-	    git checkout -b YourBranchName
+	    `git checkout -b YourBranchName`
     When you have changes:
-    	git add * – stages every change you have
-	    git commit -m “Write your commit message ” – Commits changes
-	    git push – push changes into online branch.
+    	`git add *` – stages every change you have
+	    `git commit -m “Write your commit message ”` – Commits changes
+	    `git push` – push changes into online branch.
