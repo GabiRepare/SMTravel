@@ -6,7 +6,6 @@ This is the simulation project for the class CSI 4124
     2.	In IntelliJ go to File > New > Project from Version Control > Git
     3.	Git Repository URL: https://github.com/GabiRepare/SMTravel.git
     4.	Clone
-    5.	Click on .idea folder in the IDE, select “mark directory as” > Excluded
 
 ## Some useful commands:
     To create your branch:
