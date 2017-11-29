@@ -2,9 +2,9 @@ package simModel;
 
 class Output 
 {
-	ModelName model;
+	SMTravel model;
 	
-	protected Output(ModelName md) { model = md; }
+	protected Output(SMTravel md) { model = md; }
     // Use OutputSequence class to define Trajectory and Sample Sequences
     // Trajectory Sequences
 
