@@ -5,8 +5,10 @@ public class Call {
 	enum CustomerType { GOLD,SILVER,REGULAR};//
 	enum Type{INFORMATION, RESERVATION, CHANGE};
 	CustomerType uCustomerType;
-	Type uType;// Type of call
+	Type uCallType;// Type of call
 	double uServiceTime;
 	double uAfterCallWorkTime;
-	double uWaitTimeTolerance;
+	double uToleratedWaitTime;
+	double startWaitTime;
+	 
 }
