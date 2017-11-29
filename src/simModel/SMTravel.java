@@ -83,5 +83,3 @@ public class SMTravel extends AOSimulationModel
 	}	
 
 }
-
-
