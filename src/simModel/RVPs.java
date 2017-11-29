@@ -17,12 +17,13 @@ class RVPs
 	{ 
 		this.model = model; 
 		// Set up distribution functions
-		interArrDist = new Exponential(1.0/WMEAN1,  
+		regularArr = new Exponential(1.0/WMEAN1,  
 				                       new MersenneTwister(sd.seed1));
 	}
 	
 	/* Random Variate Procedure for Arrivals */
-	private Exponential interArrDist;  // Exponential distribution for interarrival times
+	private Exponential regularArr;  // Exponential distribution for interarrival times
+	private Exponential CardholderArr;
 	private final double WMEAN1=10.0;
 	protected double duInput()  // for getting next value of duInput
 	{
