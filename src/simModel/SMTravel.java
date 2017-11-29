@@ -28,7 +28,7 @@ public class SMTravel extends AOSimulationModel
 
 	// Output object
 	protected Output output = new Output(this);
-	
+	//call getters in output you can get any values you want
 	// Output values - define the public methods that return values
 	// required for experimentation.
 
