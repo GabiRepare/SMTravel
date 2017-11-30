@@ -6,7 +6,8 @@ class TalkToOperator extends ConditionalActivity {
     SMTravel model;
     //Customer Type is definied in Call.java, double check
 
-    protected Call uCustomerType=new Call(model);
+    protected Call.CallType callType;
+    protected  Operators.OperatorType operatorType;
     public TalkToOperator(SMTravel model) { this.model = model; }
 
     protected static boolean precondition(SMTravel simModel){
@@ -23,7 +24,7 @@ class TalkToOperator extends ConditionalActivity {
     }
 
     protected double duration(){
-        return (model.rvp.uServiceTime(uCustomerType));
+        return (model.rvp.uServiceTime(callType,operatorType));
     }
 
     protected void secondaryEvent(){
