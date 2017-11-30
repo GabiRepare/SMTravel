@@ -67,8 +67,18 @@ class RVPs
 			return ThreadLocalRandom.current().nextDouble(1.14,5.51);
 		}
 		return 0;
-
-
+	}
+	public double uAfterCallWorkTime(Call.CustomerType uCustomerType) {
+		if(uCustomerType.toString()=="GOLD" ) {
+			return ThreadLocalRandom.current().nextDouble(0.05, 0.10);
+		}
+		if(uCustomerType.toString()=="SILVER" ) {
+			return ThreadLocalRandom.current().nextDouble(0.05, 0.80);
+		}
+		if(uCustomerType.toString()=="REGULAR" ) {
+			return ThreadLocalRandom.current().nextDouble(0.40, 0.60);
+		}
+		return 0;
 		
 	}
 

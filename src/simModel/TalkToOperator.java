@@ -8,6 +8,7 @@ class TalkToOperator extends ConditionalActivity {
 
     protected Call.CallType callType;
     protected  Operators.OperatorType operatorType;
+    protected Call.CustomerType uCustomerType;
     public TalkToOperator(SMTravel model) { this.model = model; }
 
     protected static boolean precondition(SMTravel simModel){
@@ -33,7 +34,7 @@ class TalkToOperator extends ConditionalActivity {
     }
 
     protected double secondaryDuration(){
-        return (uAfterCallWorkTime(uCustomerType));
+        return (model.rvp.uAfterCallWorkTime(uCustomerType));
     }
 
     protected void terminatingEvent(){
