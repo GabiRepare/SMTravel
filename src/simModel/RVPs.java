@@ -81,5 +81,18 @@ class RVPs
 		return 0;
 		
 	}
+	public double uToleratedWaitTime(Call.CustomerType uCustomerType) {
+		if(uCustomerType.toString()=="GOLD" ) {
+			return ThreadLocalRandom.current().nextDouble(8,17);
+		}
+		if(uCustomerType.toString()=="SILVER" ) {
+			return ThreadLocalRandom.current().nextDouble(8,17);
+		}
+		if(uCustomerType.toString()=="REGULAR" ) {
+			return ThreadLocalRandom.current().nextDouble(12,30);
+		}
+		return 0;
+	}
+
 
 }
