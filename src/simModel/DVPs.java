@@ -2,10 +2,10 @@ package simModel;
 
 class DVPs 
 {
-	CMTravel model;  // for accessing the clock
+	SMTravel model;  // for accessing the clock
 	
 	// Constructor
-	protected DVPs(CMTravel model) { this.model = model; }
+	protected DVPs(SMTravel model) { this.model = model; }
 
 	// Translate deterministic value procedures into methods
         /* -------------------------------------------------
