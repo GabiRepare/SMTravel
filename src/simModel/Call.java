@@ -2,6 +2,7 @@ package simModel;
 
 public class Call {
    SMTravel model; //reference to model object
+	//TODO fix this constant thing
 	enum CustomerType { GOLD
 		{@Override
 	    public String toString() {
