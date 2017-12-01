@@ -15,4 +15,5 @@ class Output
     // Sequences - add them here
 
     // SSOVs
+	protected static int
 }
