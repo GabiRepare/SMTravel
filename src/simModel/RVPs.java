@@ -22,19 +22,39 @@ class RVPs
 				                       new MersenneTwister(sd.arr));
 	}
 	
-	/* Random Variate Procedure for Arrivals */
-	private Exponential interArrDist;  // Exponential distribution for interarrival times
-	private final double WMEAN1=10.0;
-	protected double duInput()  // for getting next value of duInput
-	{
-	    double nxtInterArr;
+	//Customer arrival time
+	protected final static double REGULAR1 = 87.0;
+	protected final static double REGULAR2 = 165.0;
+	protected final static double REGULAR3 = 236.0;
+	protected final static double REGULAR4 = 323.0;
+	protected final static double REGULAR5 = 277.0;
+	protected final static double REGULAR6 = 440.0;
+	protected final static double REGULAR7= 269.0;
+	protected final static double REGULAR8=342;
+	protected final static double REGULAR9=175;
+	protected final static double REGULAR10=273;
+	protected final static double REGULAR11=115;
+	protected final static double REGULAR12=56;
+	protected final static double CARDHOLDER1 =89 ;
+	protected final static double CARDHOLDER2 =243 ;
+	protected final static double CARDHOLDER3 =221 ;
+	protected final static double CARDHOLDER4 =180 ;
+	protected final static double CARDHOLDER5 =301 ;
+	protected final static double CARDHOLDER6 =490 ;
+	protected final static double CARDHOLDER7 =394 ;
+	protected final static double CARDHOLDER8 =347 ;
+	protected final static double CARDHOLDER9 =240 ;
+	protected final static double CARDHOLDER10 =269 ;
+	protected final static double CARDHOLDER11 = 145;
+	protected final static double CARDHOLDER12 =69 ;
+	
+	private final double PROPGOLD = 0.32;
+	private final double PROPSIL = 0.68;
+	private final double PROPINFO=0.16;
+	private final double PROPRES=0.76;
+	private final double PROPCH=0.08;
 
-        nxtInterArr = interArrDist.nextDouble();
-	    // Note that interarrival time is added to current
-	    // clock value to get the next arrival time.
-	    return(nxtInterArr+model.getClock());
-	}
-
+	
 	public double uServiceTime(Call.CallType callType, Operators.OperatorType operatorType){
 		if(callType.toString()=="INFORMATION" && operatorType.toString()=="REGULAR" ) {
 			return ThreadLocalRandom.current().nextDouble(1.2, 3.75);
