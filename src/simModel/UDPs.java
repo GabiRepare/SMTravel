@@ -1,10 +1,11 @@
 package simModel;
 
+import simModel.Call.CustomerType;
 
 public class UDPs
 {
 	SMTravel model;  // for accessing the clock
-	
+    protected Call call = new Call(model);
 	// Constructor
 	protected UDPs(SMTravel model) { this.model = model; }
 
@@ -22,21 +23,21 @@ public class UDPs
         }
 
     }
-    protected void CallRegistration(Call caller)
+    protected void CallRegistration(Call.CustomerType uCustomerType)
     {
-        TtrunkLineReadyToAcceptCall(Caller.uCustomerType, simModel.RgTrunkLine.numTrunkLineInUse)
+        TtrunkLineReadyToAcceptCall(uCustomerType, simModel.RgTrunkLine.numTrunkLineInUse)
         if(simModel.RgTrunkLine.numEmptyTrunkLine>0 && simModel.RgTrunkLine.numEmptyTrunkLine > simModel.TrunkLine.numReservedLine)
         {
             if(simModel.RgTrunkLine.numEmptyTrunkLine > simModel.RgTrunkLine.numReservedLine)
             {
                 simModel.RgTrunkLine.numTrunkLineInUse++;
-                simModel.QwaitLine[caller.uCustomerType].insertQueue(caller);
+                simModel.QwaitLine[uCustomerType].insertQueue(caller);
             }
         }
         else if(simModle.RGTrunkLine.numReservedLine> 0 AND
         simModel.RgTrunkLine.numEmptyTrunkLine <= simModel.RgTrunkLine.RgTrunkLine.numReservedLine)
         {
-            if(caller.uCustomerType == GOLD or caller.uCustomerType == SILVER)
+            if(uCustomerType.toString()=="GOLD" ||uCustomerType.toString()=="SILVER")
             {
 
                 simModel.RgTrunkLine.numTrunkLineInUse++;
@@ -49,15 +50,15 @@ public class UDPs
         }
     }
 
-    protected void ProcessTalkToOperator(int operatorType)
+    protected void processTalkToOperator(Operators.OperatorType operatorType)
     {
-        if(operatorType == Constants.GOLD) {
+        if( operatorType.toString()=="GOLD" ) {
             if (simModel.QwaitLine[GOLD].length > 0)
             {
                 simModel.QwaitLine[Gold].RemoveQueue(simModle.QwaitLine[GOLD].length -1);
             }
         }
-        else if(operatorType == Constants.SILVER)
+        else if( operatorType.toString()=="SILVER" )
         {
             if (simModel.QwaitLine[GOLD].length > 0)
             {

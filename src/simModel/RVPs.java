@@ -47,6 +47,7 @@ class RVPs
 		if(callType.toString()=="CHANGE" && operatorType.toString()=="REGULAR" ) {
 			return ThreadLocalRandom.current().nextDouble(1.20, 5.80);
 			//return triangularDistribution(1.20, 1.90, 5.80);
+			//hi
 		}
 		if(callType.toString()=="INFORMATION" && operatorType.toString()=="GOLD" ) {
 			return ThreadLocalRandom.current().nextDouble(1.056,3.3);

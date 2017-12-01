@@ -8,7 +8,9 @@ class TalkToOperator extends ConditionalActivity {
 
     protected Call.CallType callType;
     protected  Operators.OperatorType operatorType;
+
     protected Call.CustomerType uCustomerType;
+    protected UDPs udp = new UDPs(model);
     public TalkToOperator(SMTravel model) { this.model = model; }
 
     protected static boolean precondition(SMTravel simModel){
@@ -21,7 +23,7 @@ class TalkToOperator extends ConditionalActivity {
     }
 
     public void startingEvent(){
-        processTalkToOperator(uCustomerType);
+        model.udp.processTalkToOperator(operatorType);
     }
 
     protected double duration(){
