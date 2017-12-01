@@ -1,6 +1,8 @@
 package simModel;
 
-class Arrivals
+import simulationModelling.ScheduledAction;
+
+class Arrivals extends ScheduledAction
 {
     Arrivals model; // To access the complete model
 
@@ -18,9 +20,10 @@ class Arrivals
         icCall = new Call();
         icCall.uCustomerType = model.rvp.uCustomerType();
         icCall.uCallType = model.rvp.uCallType();
+        icCall.uStartWaitTime = model.getClock();
+        icCall.uToleratedWaitTime = model.rvp.uToleratedWaitTime(icCall.uCustomerType)
         CallRegistration(iC.Call.uCustomerType);
         SSOV.numCallProcessed++;
-        icCall.uStartWaitTime = t;
     }
 
 }
