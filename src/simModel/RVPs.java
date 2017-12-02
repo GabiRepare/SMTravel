@@ -28,12 +28,12 @@ class RVPs
 		giSrvTm = new Uniform(GIAFMIN,GIAFMAX,sd.goldaftstm);
 		grSrvTm = new Uniform(GRAFMIN,GRAFMAX,sd.goldaftstm);
 		gcSrvTm = new Uniform(GCAFMIN,GCAFMAX,sd.goldaftstm);
-		siSrvTm = new Uniform(GIAFMIN,GIAFMAX,sd.sliveraftstm);
-		srSrvTm = new Uniform(GRAFMIN,GRAFMAX,sd.sliveraftstm);
-		scSrvTm = new Uniform(GCAFMIN,GCAFMAX,sd.sliveraftstm);
-		riSrvTm = new Uniform(GIAFMIN,GIAFMAX,sd.regularaftstm);
-		rrSrvTm = new Uniform(GRAFMIN,GRAFMAX,sd.regularaftstm);
-		rcSrvTm = new Uniform(GCAFMIN,GCAFMAX,sd.regularaftstm);
+		siSrvTm = new Uniform(SIAFMIN,SIAFMAX,sd.sliveraftstm);
+		srSrvTm = new Uniform(SRAFMIN,SRAFMAX,sd.sliveraftstm);
+		scSrvTm = new Uniform(SCAFMIN,SCAFMAX,sd.sliveraftstm);
+		riSrvTm = new Uniform(RIAFMIN,RIAFMAX,sd.regularaftstm);
+		rrSrvTm = new Uniform(RRAFMIN,RRAFMAX,sd.regularaftstm);
+		rcSrvTm = new Uniform(RCAFMIN,RCAFMAX,sd.regularaftstm);
 		
 		//serTime for 
 		giSerTM=new Uniform(1.2,3.75,sd.goldstm);
@@ -196,32 +196,32 @@ class RVPs
 	private Uniform rrSerTM;  // reservation
 	private Uniform rcSerTM; //change
 	public double uServiceTime(Call.CallType callType, Operators.OperatorType operatorType){
-		if(callType.toString()=="INFORMATION" && operatorType.toString()=="REGULAR" ) {
+		if(callType.getValue()==Constants.INFORMATION && operatorType.getValue()==Constants.REGULAR ) {
 		return triangularDistribution(1.2, 2.05, 3.75,riSerTM);
 		}
-		if(callType.toString()=="RESERVATION" && operatorType.toString()=="REGULAR" ) {
+		if(callType.getValue()==Constants.RESERVATION && operatorType.getValue()==Constants.REGULAR ) {
 			return triangularDistribution(2.25, 2.95, 8.60,rrSerTM);
 		}
-		if(callType.toString()=="CHANGE" && operatorType.toString()=="REGULAR" ) {
+		if(callType.getValue()==Constants.CHANGE && operatorType.getValue()==Constants.REGULAR ) {
 			return triangularDistribution(1.20, 1.90, 5.80,rcSerTM);
 			
 		}
-		if(callType.toString()=="INFORMATION" && operatorType.toString()=="GOLD" ) {
+		if(callType.getValue()==Constants.INFORMATION && operatorType.getValue()==Constants.GOLD ) {
 			return triangularDistribution(1.056, 1.804, 3.3,giSerTM);
 		}
-		if(callType.toString()=="RESERVATION" && operatorType.toString()=="GOLD" ) {
+		if(callType.getValue()==Constants.RESERVATION && operatorType.getValue()==Constants.GOLD ) {
 			return triangularDistribution(1.98, 2.596, 7.568,grSerTM);
 		}
-		if(callType.toString()=="CHANGE" && operatorType.toString()=="GOLD" ) {
+		if(callType.getValue()==Constants.CHANGE && operatorType.getValue()==Constants.GOLD ) {
 			return triangularDistribution(1.056,1.672, 5.104,gcSerTM);
 		}
-		if(callType.toString()=="INFORMATION" && operatorType.toString()=="SILVER" ) {
+		if(callType.getValue()==Constants.INFORMATION && operatorType.getValue()==Constants.SILVER ) {
 			return triangularDistribution(1.14,1.9475, 3.5625,siSerTM);
 		}
-		if(callType.toString()=="RESERVATION" && operatorType.toString()=="SILVER" ) {
+		if(callType.getValue()==Constants.RESERVATION && operatorType.getValue()==Constants.SILVER ) {
 			return triangularDistribution(2.1375,2.8025, 8.17,srSerTM);
 		}
-		if(callType.toString()=="CHANGE" && operatorType.toString()=="SILVER" ) {
+		if(callType.getValue()==Constants.CHANGE && operatorType.getValue()==Constants.SILVER) {
 			return triangularDistribution(1.14,1.805, 5.51,scSerTM);
 		}
 		return 0;
@@ -253,7 +253,7 @@ class RVPs
 			}
 		if((uCustomerType==Call.CustomerType.REGULAR) && (callType==Call.CallType.CHANGE)){
 				return afterSrvTm = rcSrvTm.nextDouble();}
-		return 0;
+		return afterSrvTm;
 		
 	}
 	public double uToleratedWaitTime(Call.CustomerType uCustomerType) {
