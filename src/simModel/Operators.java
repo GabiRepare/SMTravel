@@ -2,23 +2,50 @@ package simModel;
 public class Operators {
 	// Attributes
 	 SMTravel model;
+	 
 		protected int numFreeOperators;  // Number of free operator 
 		protected int addNumOperators;  // Number of operator to add during busy periods, this attribute is a parameter
 
-		enum OperatorType { GOLD
-			{@Override
-		    public String toString() {
-		      return "GOLD";
-		    }},SILVER
-			{@Override
-			    public String toString() {
-			      return "SILVER";
-			    }},
-			REGULAR
-			{@Override
-				    public String toString() {
-				      return "REGULAR";
-				    }}};
+	    protected int[][] operatorQt; 
+	    enum OperatorType { GOLD(0),SILVER(1),REGULAR(2);
+			private int value;
+
+			private OperatorType(int value)
+			{
+				this.value = value;
+			}
+			public int getValue()
+			{
+				return value;
+			}};
+
 		OperatorType uOperatorsType; 
+		  protected Operators( SMTravel model){ this.model = model; }
 		
+
+enum OperatorShift
+{
+	SHIFT_1(0),
+	SHIFT_2(60),
+	SHIFT_3(120),
+	SHIFT_4(180),
+	SHIFT_5(240),
+	SHIFT_6(300),
+	SHIFT_7(360),
+	SHIFT_8(400);
+	private int value;
+
+	private OperatorShift(int value)
+	{
+		this.value = value;
+	}
+	public int getValue()
+	{
+		return value;
+	}
+}
+OperatorShift uOperatorsShift;
+
+
+
 }

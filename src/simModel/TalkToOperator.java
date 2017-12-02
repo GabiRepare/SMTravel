@@ -8,9 +8,9 @@ class TalkToOperator extends ConditionalActivity {
 
     protected Call.CallType callType;
     protected  Operators.OperatorType operatorType;
-
     protected Call.CustomerType uCustomerType;
     protected UDPs udp = new UDPs(model);
+    protected TrunkLines trunkLines=new TrunkLines(model);
     public TalkToOperator(SMTravel model) { this.model = model; }
 
     protected static boolean precondition(SMTravel simModel){
@@ -31,12 +31,12 @@ class TalkToOperator extends ConditionalActivity {
     }
 
     protected void secondaryEvent(){
-        numTrunkLineInUse--;
+    	trunkLines.numTrunkLineInUse--;
         ssov.numServed++;
     }
 
     protected double secondaryDuration(){
-        return (model.rvp.uAfterCallWorkTime(uCustomerType));
+        return (model.rvp.uAfterCallWorkTime(uCustomerType, callType));
     }
 
     protected void terminatingEvent(){

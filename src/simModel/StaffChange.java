@@ -15,7 +15,7 @@ class StaffChange{
         return(nxtTime);
     }
 
-    protected void actionEvent(double shift) {
+    protected void actionEvent(int shift) {
         //Staff Change action sequence
 
         ProcessingStaffChange(shift);

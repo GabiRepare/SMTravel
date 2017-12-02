@@ -3,36 +3,32 @@ package simModel;
 public class Call {
    SMTravel model; //reference to model object
 	//TODO fix this constant thing
-	enum CustomerType { GOLD
-		{@Override
-	    public String toString() {
-	      return "GOLD";
-	    }},
-		SILVER
-		{@Override
-		    public String toString() {
-		      return "SILVER";
-		    }},
-		REGULAR
-		{@Override
-			    public String toString() {
-			      return "REGULAR";
-			    }}};//
-	enum CallType{INFORMATION
-		{@Override
-	    public String toString() {
-	      return "INFORMATION";
-	    }},
-		RESERVATION
-		{@Override
-		    public String toString() {
-		      return "RESERVATION";
-		    }},
-		CHANGE
-		{@Override
-			    public String toString() {
-			      return "CHANGE";
-			    }}};
+	enum CustomerType { GOLD(0),SILVER(1),REGULAR(2);
+		private int value;
+
+		private CustomerType(int value)
+		{
+			this.value = value;
+		}
+		public int getValue()
+		{
+			return value;
+		}};
+
+	enum CallType{INFORMATION(0),
+		RESERVATION(1),
+		CHANGE(2);
+		private int value;
+
+		private CallType(int value)
+		{
+			this.value = value;
+		}
+		public int getValue()
+		{
+			return value;
+		}
+	};
 	CustomerType uCustomerType;
 	CallType uCallType;// Type of call
 	private double uServiceTime;
