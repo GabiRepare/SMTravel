@@ -2,6 +2,9 @@ package simModel;
 import java.util.concurrent.ThreadLocalRandom;
 import cern.jet.random.Exponential;
 import cern.jet.random.engine.MersenneTwister;
+import cern.jet.random.Distributions;
+import cern.jet.random.engine.RandomEngine;
+import cern.jet.random.Uniform;
 
 class RVPs 
 {
@@ -20,6 +23,19 @@ class RVPs
 		// Set up distribution functions
 		interArrDist = new Exponential(1.0/WMEAN1,  
 				                       new MersenneTwister(sd.arr));
+		//uServeTime= new Triangular() ;
+		//for after service
+		giSrvTm = new Uniform(GIAFMIN,GIAFMAX,sd.goldaftstm);
+		grSrvTm = new Uniform(GRAFMIN,GRAFMAX,sd.goldaftstm);
+		gcSrvTm = new Uniform(GCAFMIN,GCAFMAX,sd.goldaftstm);
+		siSrvTm = new Uniform(GIAFMIN,GIAFMAX,sd.sliveraftstm);
+		srSrvTm = new Uniform(GRAFMIN,GRAFMAX,sd.sliveraftstm);
+		scSrvTm = new Uniform(GCAFMIN,GCAFMAX,sd.sliveraftstm);
+		riSrvTm = new Uniform(GIAFMIN,GIAFMAX,sd.regularaftstm);
+		rrSrvTm = new Uniform(GRAFMIN,GRAFMAX,sd.regularaftstm);
+		rcSrvTm = new Uniform(GCAFMIN,GCAFMAX,sd.regularaftstm);
+		customerTypeRandGen = new MersenneTwister(sd.custType);
+		callTypeRandGen = new MersenneTwister(sd.callType);
 	}
 	
 	//Customer arrival time
@@ -53,9 +69,69 @@ class RVPs
 	private final double PROPINFO=0.16;
 	private final double PROPRES=0.76;
 	private final double PROPCH=0.08;
-
 	
-	public double uServiceTime(Call.CallType callType, Operators.OperatorType operatorType){
+	MersenneTwister customerTypeRandGen;
+	MersenneTwister callTypeRandGen;
+	public Call.CustomerType uCardholderType()
+	{//TO DETERMINE THE GOLD AND SIVER IN THE CUTSTOMER
+		double randNum = customerTypeRandGen.nextDouble();
+		Call.CustomerType customerType;
+		if(randNum < PROPSIL) customerType = Call.CustomerType.SILVER;
+		else customerType = Call.CustomerType.GOLD;
+		return(customerType);
+	}
+	public Call.CallType uCallType()
+	{//TO DETERMINE CALL TYPE;
+		double randNum = callTypeRandGen.nextDouble();
+		Call.CallType callType;
+		if(randNum < PROPRES) callType = Call.CallType.RESERVATION;
+		else if(randNum < (PROPRES+PROPINFO))callType =  Call.CallType.INFORMATION;
+		else callType =  Call.CallType.CHANGE;
+		return(callType);
+	}	
+	// Min and Max for GOLD service times WITH INFORMATION, RESERVATION, CHANGES
+	private final double GIAFMIN = 0.044;
+	private final double GIAFMAX = 0.088;
+	private final double GRAFMIN = 0.44;
+	private final double GRAFMAX =  0.704;
+	private final double GCAFMIN = 0.352;
+	private final double GCAFMAX = 0.528;
+	private final double SIAFMIN = 0.0475;
+	private final double SIAFMAX = 0.095;
+	private final double SRAFMIN = 0.475;
+	private final double SRAFMAX = 0.76;
+	private final double SCAFMIN = 0.38;
+	private final double SCAFMAX = 0.57;
+	private final double RIAFMIN =0.05;
+	private final double RIAFMAX =0.10;
+	private final double RRAFMIN = 0.50;
+	private final double RRAFMAX = 0.80;
+	private final double RCAFMIN =0.40;
+	private final double RCAFMAX = 0.60;
+
+
+	/* Internal Data Models */
+	private Uniform giSrvTm;  // GOLD info after service
+	private Uniform grSrvTm;  // reservation
+	private Uniform gcSrvTm; //change
+	private Uniform siSrvTm;  // GOLD info after service
+	private Uniform srSrvTm;  // reservation
+	private Uniform scSrvTm; //change
+	private Uniform riSrvTm;  // GOLD info after service
+	private Uniform rrSrvTm;  // reservation
+	private Uniform rcSrvTm; //change
+	// Method
+	public double uServiceTime(Call.CallType callType, Operators.OperatorType operatorType)
+	{
+		double uServiceTime = 0;
+		if(operatorType ==Operators.OperatorType.GOLD) {uServiceTime = gSrvTm.nextDouble();}
+		if(operatorType == Operators.OperatorType.SILVER) { uServiceTime = sSrvTm.nextDouble();}
+		if(operatorType == Operators.OperatorType.REGULAR){ uServiceTime = rSrvTm.nextDouble();}
+		else System.out.println("rvpuSrvTm - invalid type"+operatorType);		
+		return(uServiceTime);
+	}	
+
+	public double uuServiceTime(Call.CallType callType, Operators.OperatorType operatorType){
 		if(callType.toString()=="INFORMATION" && operatorType.toString()=="REGULAR" ) {
 			return ThreadLocalRandom.current().nextDouble(1.2, 3.75);
 		//return triangularDistribution(1.2, 2.05, 3.75);
@@ -89,31 +165,53 @@ class RVPs
 		}
 		return 0;
 	}
-	public double uAfterCallWorkTime(Call.CustomerType uCustomerType) {
-		if(uCustomerType.toString()=="GOLD" ) {
-			return ThreadLocalRandom.current().nextDouble(0.05, 0.10);
+	public double uAfterCallWorkTime(Call.CustomerType uCustomerType, Call.CallType callType) {
+		double afterSrvTm=0;
+		if((uCustomerType==Call.CustomerType.GOLD) && (callType==Call.CallType.INFORMATION)) {
+			return afterSrvTm = giSrvTm.nextDouble();
 		}
-		if(uCustomerType.toString()=="SILVER" ) {
-			return ThreadLocalRandom.current().nextDouble(0.05, 0.80);
+		if((uCustomerType==Call.CustomerType.GOLD) && (callType==Call.CallType.RESERVATION)) {
+			return afterSrvTm = grSrvTm.nextDouble();
 		}
-		if(uCustomerType.toString()=="REGULAR" ) {
-			return ThreadLocalRandom.current().nextDouble(0.40, 0.60);
+		if((uCustomerType==Call.CustomerType.GOLD) && (callType==Call.CallType.CHANGE)){
+			return afterSrvTm = gcSrvTm.nextDouble();
 		}
+		if((uCustomerType==Call.CustomerType.SILVER) && (callType==Call.CallType.INFORMATION)) {
+			return afterSrvTm = siSrvTm.nextDouble();
+		}
+		if((uCustomerType==Call.CustomerType.SILVER) && (callType==Call.CallType.RESERVATION)) {
+			return afterSrvTm = srSrvTm.nextDouble();
+		}
+		if((uCustomerType==Call.CustomerType.SILVER) && (callType==Call.CallType.CHANGE)){
+			return afterSrvTm = scSrvTm.nextDouble();}
+		if((uCustomerType==Call.CustomerType.REGULAR) && (callType==Call.CallType.INFORMATION)) {
+				return afterSrvTm = riSrvTm.nextDouble();
+			}
+		if((uCustomerType==Call.CustomerType.REGULAR) && (callType==Call.CallType.RESERVATION)) {
+				return afterSrvTm = rrSrvTm.nextDouble();
+			}
+		if((uCustomerType==Call.CustomerType.REGULAR) && (callType==Call.CallType.CHANGE)){
+				return afterSrvTm = rcSrvTm.nextDouble();}
 		return 0;
 		
 	}
 	public double uToleratedWaitTime(Call.CustomerType uCustomerType) {
-		if(uCustomerType.toString()=="GOLD" ) {
+		if(uCustomerType==Call.CustomerType.GOLD) {
 			return ThreadLocalRandom.current().nextDouble(8,17);
 		}
-		if(uCustomerType.toString()=="SILVER" ) {
+		if(uCustomerType==Call.CustomerType.SILVER ) {
 			return ThreadLocalRandom.current().nextDouble(8,17);
 		}
-		if(uCustomerType.toString()=="REGULAR" ) {
+		if(uCustomerType==Call.CustomerType.REGULAR) {
 			return ThreadLocalRandom.current().nextDouble(12,30);
 		}
 		return 0;
 	}
-
+ public double enterCardNumerTime(Call.CustomerType uCustomerType) {
+	 if(uCustomerType==Call.CustomerType.GOLD||uCustomerType==Call.CustomerType.SILVER  ) {
+			return ThreadLocalRandom.current().nextDouble(7,12);
+		}
+	 return 0;
+ }
 
 }

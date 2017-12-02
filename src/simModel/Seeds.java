@@ -12,6 +12,9 @@ public class Seeds
 	int silverstm;   // silver customer service time
 	int regularstm; //regular customer service time
 	int callType; //call type
+	int goldaftstm;
+	int sliveraftstm;
+	int regularaftstm;
 
 
 	public Seeds(RandomSeedGenerator rsg)
@@ -22,5 +25,9 @@ public class Seeds
 		silverstm=rsg.nextSeed();
 		regularstm=rsg.nextSeed();
 		callType=rsg.nextSeed();
+		goldaftstm=rsg.nextSeed();
+		sliveraftstm=rsg.nextSeed();
+		regularaftstm=rsg.nextSeed();
+		
 	}
 }
