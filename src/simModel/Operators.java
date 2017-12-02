@@ -3,10 +3,11 @@ public class Operators {
 	// Attributes
 	 SMTravel model;
 	 
-		protected int numFreeOperators;  // Number of free operator 
-		protected int addNumOperators;  // Number of operator to add during busy periods, this attribute is a parameter
+		protected  int numFreeOperators;  // Number of free operator 
+		protected  int addNumOperators;  // Number of operator to add during busy periods, this attribute is a parameter
 
-	    protected int[][] operatorQt; 
+	    protected  int[][] operatorQt;
+	   
 	    enum OperatorType { GOLD(0),SILVER(1),REGULAR(2);
 			private int value;
 

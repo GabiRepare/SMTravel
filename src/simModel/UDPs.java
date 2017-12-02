@@ -59,8 +59,8 @@ public class UDPs
     }
     protected void CallRegistration(Call.CustomerType uCustomerType)
     {
-        TtrunkLineReadyToAcceptCall(uCustomerType, trunklines.numTrunkLineInUse)
-        if(trunklines.numEmptyTrunkLine>0 &&trunklines.numEmptyTrunkLine > simModel.TrunkLine.numReservedLine)
+        TtrunkLineReadyToAcceptCall(uCustomerType, trunklines.numTrunkLineInUse);
+        if(trunklines.numEmptyTrunkLine>0 &&trunklines.numEmptyTrunkLine > trunklines.numReservedLine)
         {
             if(trunklines.numEmptyTrunkLine > trunklines.numReservedLine)
             {
@@ -121,18 +121,18 @@ public class UDPs
 
     }
     protected void ProcessingStaffChange(Operators.OperatorType uOperatorsType,int shift)
-    {
+    {	
         if(uOperatorsType.getValue() == Constants.GOLD)
         {
-        	Operators.numFreeOperators += Operators.operatorQt[shift][Constants.GOLD];
+        	operators.numFreeOperators += operators.operatorQt[shift][Constants.GOLD];
         }
         if(uOperatorsType.getValue() == Constants.SILVER)
         {
-        	Operators.numFreeOperators += Operators.operatorQt[shift][Constants.SILVER];
+        	operators.numFreeOperators += operators.operatorQt[shift][Constants.SILVER];
         }
         if(uOperatorsType.getValue() == Constants.REGULAR)
         {
-        	Operators.numFreeOperators += Operators.operatorQt[shift][Constants.REGULAR];
+        	operators.numFreeOperators += operators.operatorQt[shift][Constants.REGULAR];
         }
     }
 }
