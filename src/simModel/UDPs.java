@@ -35,7 +35,7 @@ public class UDPs
             if(trunklines.numEmptyTrunkLine > trunklines.numReservedLine)
             {
                 trunklines.numTrunkLineInUse++;
-                model.qWaitLines[call.uCustomerType].insertQueue(call);
+                model.qWaitLines[call.uCustomerType.getValue()].add(call);
             }
         }
         else if(trunklines.numReservedLine> 0 &&
@@ -45,7 +45,7 @@ public class UDPs
             {
 
                 trunklines.numTrunkLineInUse++;
-                model.qWaitLines[call.uCustomerType].insertQueue(call);
+                model.qWaitLines[call.uCustomerType.getValue()].add(call);
             }
         }
         else if(trunklines.numEmptyTrunkLine == 0)
@@ -59,7 +59,7 @@ public class UDPs
         if (simModel.RgTrunkLine.numEmptyTrunkLine > 0 && simModel.RgTrunkLine.numEmptyTrunkLine > simModel.TrunkLine.numReservedLine) {
             if (simModel.RgTrunkLine.numEmptyTrunkLine > simModel.RgTrunkLine.numReservedLine) {
                 trunklines.numTrunkLineInUse++;
-                model.qWaitLines[uCustomerType].insertQueue(call);
+                model.qWaitLines[uCustomerType.getValue()].add(call);
             }
         } else if (simModle.RGTrunkLine.numReservedLine > 0 &&
                 simModel.RgTrunkLine.numEmptyTrunkLine <= simModel.RgTrunkLine.RgTrunkLine.numReservedLine) {
@@ -67,7 +67,7 @@ public class UDPs
             if(uCustomerType == Constants.GOLD ||uCustomerType == Constants.SILVER)
 
                 trunklines.numTrunkLineInUse++;
-                simModel.QwaitLine[caller.uCustomerType].insertQueue(uCustomerType);
+                model.qWaitLines[call.uCustomerType.getValue()].add(call);
             }
         } else if (simModel.RgTrunkLine.numEmptyTrunkLine == 0) {
             output.numBusySignal++;
@@ -78,6 +78,7 @@ public class UDPs
         if( operatorType == Constants.GOLD ) {
             if (simModel.QwaitLine[GOLD].length > 0) {
                 simModel.QwaitLine[Gold].RemoveQueue(simModle.QwaitLine[GOLD].length - 1);
+                model.qWaitLines[Constants.GOLD].remove(model.qWaitLines[Constants.GOLD].size() -1);
             }
         } else if (operatorType.toString() == "SILVER") {
         else if( operatorType == Constants.SILVER )
@@ -91,13 +92,14 @@ public class UDPs
             if (simModel.QwaitLine[GOLD].length > 0) {
             if (simModel.QwaitLine[Constants.GOLD].length > 0)
                 simModel.QwaitLine[Constants.Gold].RemoveQueue(simModle.QwaitLine[Constants.GOLD].length -1);
-            } else if (simModel.QwaitLine[SILVER].length > 0) {
+                model.qWaitLines[Constants.GOLD].remove(model.qWaitLines[Constants.GOLD].size() -1);
             else if(simModel.QwaitLine[Constants.SILVER].length > 0)
                 simModel.QwaitLine[Constants.SILVER].RemoveQueue(simModle.QwaitLine[Constants.SILVER].length -1);
             } else if (simModel.QwaitLine[REGULAR].length > 0) {
             else if(simModel.QwaitLine[Constants.REGULAR].length > 0)
                 simModel.QwaitLine[Constants.REGULAR].RemoveQueue(simModle.QwaitLine[Constants.REGULAR].length -1);
             }
+                model.qWaitLines[Constants.SILVER].remove(model.qWaitLines[Constants.SILVER].size() -1);
         }
 
     }
@@ -106,15 +108,15 @@ public class UDPs
     {
         if(simModel.Operator.uOperatorType == Constants.GOLD)
         {
-            simModel.numFreeOperators += simModel.Operator.OperatorQt[shift][Constants.GOLD];
+                model.qWaitLines[Constants.GOLD].remove(model.qWaitLines[Constants.GOLD].size() -1);
         }
         if(simModel.Operator.uOperatorType == Constants.SILVER)
         {
-            simModel.numFreeOperators += simModel.Operator.OperatorQt[shift][Constants.SILVER];
+                model.qWaitLines[Constants.SILVER].remove(model.qWaitLines[Constants.SILVER].size() -1);
         }
         if(simModel.Operator.uOperatorType == Constants.REGULAR)
         {
-            simModel.numFreeOperators += simModel.Operator.OperatorQt[shift][Constants.REGULAR];
+                model.qWaitLines[Constants.REGULAR].remove(model.qWaitLines[Constants.REGULAR].size() -1);
         }
     }
 }
