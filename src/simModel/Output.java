@@ -44,4 +44,5 @@ class Output
 	}
 	
     // SSOVs
+	protected static int
 }
