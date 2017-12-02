@@ -4,7 +4,7 @@ import simulationModelling.ScheduledAction;
 
 class Arrivals extends ScheduledAction
 {
-    Arrivals model; // To access the complete model
+    SMTravel model; // To access the complete model
 
     public Arrivals(SMTravel model) { this.model = model; }
 
@@ -15,7 +15,7 @@ class Arrivals extends ScheduledAction
     }
 
     @Override
-    public void actionEvent() {
+    protected void actionEvent() {
         // Arrival Action Sequence SCS
         icCall = new Call();
         icCall.uCustomerType = model.rvp.uCustomerType();
