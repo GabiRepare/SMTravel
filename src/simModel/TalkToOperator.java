@@ -10,16 +10,28 @@ class TalkToOperator extends ConditionalActivity {
     protected  Operators.OperatorType operatorType;
 
     protected Call.CustomerType uCustomerType;
-    protected UDPs udp = new UDPs(model);
+
     public TalkToOperator(SMTravel model) { this.model = model; }
 
     protected static boolean precondition(SMTravel simModel){
-        boolean returnValue = false;
-        //this may need to be modified based on other classes
-        if(simModel.rgOperator.type == simModel.n && simModel.n != 0){
-            returnValue = true;
+        if(call.uCostmerType == Constant.GOLD)
+        {
+            if(simModel.Operator[Constants.GOLD].numFreeOperator>0 ||
+                    simModel.Operator[Constants.SILVER].numFreeOperator>0 ||
+                    simModel.Operator[Constants.REGULAR].numFreeOperator>0)
+            {
+                return true;
+            }
         }
-        return(returnValue);
+        else if (call.uCostmerType == Constant.SILVER || Constant.REGULAR)
+        {
+            if(simModel.Operator[Constants.SILVER].numFreeOperator>0 ||
+               simModel.Operator[Constants.REGULAR].numFreeOperator>0
+            {
+                return true;
+            }
+        }
+        return false;
     }
 
     public void startingEvent(){

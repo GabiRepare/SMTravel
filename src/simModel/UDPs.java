@@ -12,33 +12,13 @@ public class UDPs
 
 
     // Translate User Defined Procedures into methods
-    protected void TtrunkLineReadyToAcceptCall(int callType, int numTrunkLineInUse)
+  	protected int TtrunkLineReadyToAcceptCall(int callType, int numTrunkLineInUse)
     {
         if (callType == Constants.REGULAR)
         {
-            simModel.RgTrunkLine.numEmptyTrunkLine = max(numTrunkLineInUse - numReserveLine, 0);
-            simModel.RgTrunkLine.numEmptyTrunkLine = numTrunkLine - numTrunkLineInUse;
-        }
-
-    }
-    protected void CallRegistration(Call caller) {
-        TtrunkLineReadyToAcceptCall(Caller.uCustomerType, simModel.RgTrunkLine.numTrunkLineInUse);
-        if (simModel.RgTrunkLine.numEmptyTrunkLine > 0 && simModel.RgTrunkLine.numEmptyTrunkLine > simModel.TrunkLine.numReservedLine) {
-            if (simModel.RgTrunkLine.numEmptyTrunkLine > simModel.RgTrunkLine.numReservedLine) {
-                simModel.RgTrunkLine.numTrunkLineInUse++;
-                simModel.QwaitLine[caller.uCustomerType].insertQueue(caller);
-            }
-        } else if (simModle.RGTrunkLine.numReservedLine > 0 &&
-                simModel.RgTrunkLine.numEmptyTrunkLine <= simModel.RgTrunkLine.RgTrunkLine.numReservedLine) {
-            if (caller.uCustomerType == GOLD || caller.uCustomerType == SILVER) {
-
-                simModel.RgTrunkLine.numTrunkLineInUse++;
-                simModel.QwaitLine[caller.uCustomerType].insertQueue(caller);
-            }
-        } else if (simModel.RgTrunkLine.numEmptyTrunkLine == 0) {
-            simModel.SSOV.numBusySignal++;
+            return max(numTrunkLineInUse - numReserveLine, 0);
         } else {
-            simModel.RgTrunkLine.numEmptyTrunkLine = numTrunkLine - numTrunkLineInUse;
+            return numTrunkLine - numTrunkLineInUse;
         }
     }
 
@@ -52,9 +32,10 @@ public class UDPs
         } else if (simModle.RGTrunkLine.numReservedLine > 0 &&
                 simModel.RgTrunkLine.numEmptyTrunkLine <= simModel.RgTrunkLine.RgTrunkLine.numReservedLine) {
             if (uCustomerType.toString() == "GOLD" || uCustomerType.toString() == "SILVER") {
+            if(uCustomerType == Constants.GOLD ||uCustomerType == Constants.SILVER)
 
                 simModel.RgTrunkLine.numTrunkLineInUse++;
-                simModel.QwaitLine[caller.uCustomerType].insertQueue(caller);
+                simModel.QwaitLine[caller.uCustomerType].insertQueue(uCustomerType);
             }
         } else if (simModel.RgTrunkLine.numEmptyTrunkLine == 0) {
             simModel.SSOV.numBusySignal++;
@@ -62,26 +43,47 @@ public class UDPs
     }
 
     protected void processTalkToOperator(Operators.OperatorType operatorType) {
-        if (operatorType.toString() == "GOLD") {
+        if( operatorType == Constants.GOLD ) {
             if (simModel.QwaitLine[GOLD].length > 0) {
                 simModel.QwaitLine[Gold].RemoveQueue(simModle.QwaitLine[GOLD].length - 1);
             }
         } else if (operatorType.toString() == "SILVER") {
-            if (simModel.QwaitLine[GOLD].length > 0) {
-                simModel.QwaitLine[Gold].RemoveQueue(simModle.QwaitLine[GOLD].length - 1);
+        else if( operatorType == Constants.SILVER )
+            if (simModel.QwaitLine[Constants.GOLD].length > 0)
+                simModel.QwaitLine[Constants.Gold].RemoveQueue(simModle.QwaitLine[GOLD].length -1);
             } else if (simModel.QwaitLine[SILVER].length > 0) {
-                simModel.QwaitLine[SILVER].RemoveQueue(simModle.QwaitLine[SILVER].length - 1);
+            else if(simModel.QwaitLine[Constants.SILVER].length > 0)
+                simModel.QwaitLine[Constants.SILVER].RemoveQueue(simModle.QwaitLine[Constants.SILVER].length -1);
             }
         } else {
             if (simModel.QwaitLine[GOLD].length > 0) {
-                simModel.QwaitLine[Gold].RemoveQueue(simModle.QwaitLine[GOLD].length - 1);
+            if (simModel.QwaitLine[Constants.GOLD].length > 0)
+                simModel.QwaitLine[Constants.Gold].RemoveQueue(simModle.QwaitLine[Constants.GOLD].length -1);
             } else if (simModel.QwaitLine[SILVER].length > 0) {
-                simModel.QwaitLine[SILVER].RemoveQueue(simModle.QwaitLine[SILVER].length - 1);
+            else if(simModel.QwaitLine[Constants.SILVER].length > 0)
+                simModel.QwaitLine[Constants.SILVER].RemoveQueue(simModle.QwaitLine[Constants.SILVER].length -1);
             } else if (simModel.QwaitLine[REGULAR].length > 0) {
-                simModel.QwaitLine[REGULAR].RemoveQueue(simModle.QwaitLine[REGULAR].length - 1);
+            else if(simModel.QwaitLine[Constants.REGULAR].length > 0)
+                simModel.QwaitLine[Constants.REGULAR].RemoveQueue(simModle.QwaitLine[Constants.REGULAR].length -1);
             }
         }
 
+    }
+
+    protected void ProcessingStaffChange(int shift)
+    {
+        if(simModel.Operator.uOperatorType == Constants.GOLD)
+        {
+            simModel.numFreeOperators += simModel.Operator.OperatorQt[shift][Constants.GOLD];
+        }
+        if(simModel.Operator.uOperatorType == Constants.SILVER)
+        {
+            simModel.numFreeOperators += simModel.Operator.OperatorQt[shift][Constants.SILVER];
+        }
+        if(simModel.Operator.uOperatorType == Constants.REGULAR)
+        {
+            simModel.numFreeOperators += simModel.Operator.OperatorQt[shift][Constants.REGULAR];
+        }
     }
 }
 
