@@ -18,13 +18,9 @@ public class SMTravel extends AOSimulationModel
 	//TODO: make sure it works with TrunkLines class
 	protected double closingTime;
 	protected TrunkLines rgTrunkLines = new TrunkLines(this);
-	protected Operators rgOperator = new Operators(this);
+	protected Operators[] rgOperators = new Operators[3];
+	protected ArrayList<Call>[] qWaitLines = new ArrayList[3];
 
-	//protected Queue<CallType> qWaitLines = new Queue<CallType>();
-	protected ArrayList<Call>[] qWaitLines = new ArrayList<Call>[3];
-	qWaitLines[0] = new ArrayList<Call>();
-	qWaitLines[1] = new ArrayList<Call>();
-	qWaitLines[2] = new ArrayList<Call>();
 
 	// Define the reference variables to the various 
 	// entities with scope Set and Unary
@@ -61,6 +57,13 @@ public class SMTravel extends AOSimulationModel
 		Initialise init = new Initialise(this);
 		scheduleAction(init);  // Should always be first one scheduled.
 		// Schedule other scheduled actions and acitvities here
+		qWaitLines[0] = new ArrayList<Call>();
+		qWaitLines[1] = new ArrayList<Call>();
+		qWaitLines[2] = new ArrayList<Call>();
+
+		rgOperators[Constants.GOLD] = new Operators();
+		rgOperators[Constants.SILVER] = new Operators();
+		rgOperators[Constants.REGULAR] = new Operators();
 	}
 
 	/************  Implementation of Data Modules***********/	

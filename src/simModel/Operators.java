@@ -1,76 +1,49 @@
 package simModel;
 public class Operators {
 	// Attributes
-	 SMTravel model;
-	 
-		protected  int numFreeOperators;  // Number of free operator 
-		protected  int addNumOperators;  // Number of operator to add during busy periods, this attribute is a parameter
-		protected int[][] OperatorQt[uOperatorsShift, uOperatorsType]; //
-		enum OperatorType
-		{
-			GOLD(Constants.GOLD),
-			SILVER(Constant.SILVER),
-			REGULAR(Constant.REGULAR);
+	SMTravel model;
 
-			private int value;
+	protected int numFreeOperators;  // Number of free operator
+	protected int addNumOperators;  // Number of operator to add during busy periods, this attribute is a parameter
+	protected int[][] operatorQt; //
 
-			private OperatorType(int value)
-			{
-				this.value = value;
-			}
-			public int getValue()
-			{
-				return value;
-			}
+	enum OperatorType {
+		GOLD(Constants.GOLD),
+		SILVER(Constants.SILVER),
+		REGULAR(Constants.REGULAR);
+
+		private int value;
+
+		 OperatorType(int value) {
+			this.value = value;
 		}
-		enum OperatorShift
-		{
-			SHIFT_1(0),
-			SHIFT_2(60),
-			SHIFT_3(120),
-			SHIFT_4(180),
-			SHIFT_5(240),
-			SHIFT_6(300),
-			SHIFT_7(360),
-			SHIFT_8(400);
-			private int value;
 
-			private OperatorShift(int value)
-			{
-				this.value = value;
-			}
-			public int getValue()
-			{
-				return value;
-			}
+		public int getValue() {
+			return value;
 		}
-		OperatorType uOperatorsType;
-		OperatorShift uOperatorsShift;
-
-
-enum OperatorShift
-{
-	SHIFT_1(0),
-	SHIFT_2(60),
-	SHIFT_3(120),
-	SHIFT_4(180),
-	SHIFT_5(240),
-	SHIFT_6(300),
-	SHIFT_7(360),
-	SHIFT_8(400);
-	private int value;
-
-	private OperatorShift(int value)
-	{
-		this.value = value;
 	}
-	public int getValue()
-	{
-		return value;
+
+	enum OperatorShift {
+		SHIFT_1(0),
+		SHIFT_2(60),
+		SHIFT_3(120),
+		SHIFT_4(180),
+		SHIFT_5(240),
+		SHIFT_6(300),
+		SHIFT_7(360),
+		SHIFT_8(400);
+		private int value;
+
+		 OperatorShift(int value) {
+			this.value = value;
+		}
+
+		public int getValue() {
+			return value;
+		}
 	}
+
+	OperatorType uOperatorsType;
+	OperatorShift uOperatorsShift;
 }
-OperatorShift uOperatorsShift;
 
-
-
-}

@@ -21,6 +21,7 @@ class StaffChange extends ScheduledAction {
 
     protected void actionEvent(/*TODO fix this ->double shift*/) {
         //Staff Change action sequence
-        ProcessingStaffChange(shift);
+        int shift = 0;
+        model.udp.ProcessingStaffChange(Operators.OperatorType.GOLD, shift);
     }
 }

@@ -5,29 +5,38 @@ import simulationModelling.ConditionalActivity;
 class TalkToOperator extends ConditionalActivity {
     SMTravel model;
     //Customer Type is definied in Call.java, double check
-
+    Call call = new Call(model);
     protected Call.CallType callType;
     protected  Operators.OperatorType operatorType;
     protected Call.CustomerType uCustomerType;
-
     protected TrunkLines trunkLines=new TrunkLines(model);
     public TalkToOperator(SMTravel model) { this.model = model; }
 
-    protected static boolean precondition(SMTravel simModel){
-        if(call.uCostmerType == Constant.GOLD)
+    protected boolean precondition(SMTravel simModel){
+        if(call.uCustomerType == Call.CustomerType.GOLD)
         {
-            if(simModel.Operator[Constants.GOLD].numFreeOperator>0 ||
-                    simModel.Operator[Constants.SILVER].numFreeOperator>0 ||
-                    simModel.Operator[Constants.REGULAR].numFreeOperator>0)
+            if(model.rgOperators[Constants.GOLD].numFreeOperators >0 ||
+                    model.rgOperators[Constants.SILVER].numFreeOperators>0 ||
+                    model.rgOperators[Constants.REGULAR].numFreeOperators>0)
             {
+                //TODO Need to user constants instead
+                operatorType = Operators.OperatorType.GOLD;
                 return true;
             }
         }
-        else if (call.uCostmerType == Constant.SILVER || Constant.REGULAR)
+        else if (call.uCustomerType == Call.CustomerType.SILVER || call.uCustomerType == Call.CustomerType.REGULAR)
         {
-            if(simModel.Operator[Constants.SILVER].numFreeOperator>0 ||
-               simModel.Operator[Constants.REGULAR].numFreeOperator>0
+            if(model.rgOperators[Constants.SILVER].numFreeOperators>0 ||
+                    model.rgOperators[Constants.REGULAR].numFreeOperators>0)
             {
+                if(model.rgOperators[Constants.SILVER].numFreeOperators>0)
+                {
+                    operatorType = Operators.OperatorType.SILVER;
+                }
+                else if(model.rgOperators[Constants.SILVER].numFreeOperators>0)
+                {
+                    operatorType = Operators.OperatorType.REGULAR;
+                }
                 return true;
             }
         }
@@ -44,7 +53,7 @@ class TalkToOperator extends ConditionalActivity {
 
     protected void secondaryEvent(){
     	trunkLines.numTrunkLineInUse--;
-        ssov.numServed++;
+        model.output.numServed++;
     }
 
     protected double secondaryDuration(){
@@ -52,6 +61,6 @@ class TalkToOperator extends ConditionalActivity {
     }
 
     protected void terminatingEvent(){
-        simModel.rgOperator.numFreeOperators++;
+        model.rgOperators[operatorType].numFreeOperators++;
     }
 }

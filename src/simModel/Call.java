@@ -11,7 +11,7 @@ public class Call {
 
 		private int value;
 
-		private CustomerType(int value)
+		CustomerType(int value)
 		{
 			this.value = value;
 		}
@@ -37,13 +37,13 @@ public class Call {
 			return value;
 		}
 	}
-	CustomerType uCustomerType;
+	public CustomerType uCustomerType;
 	CallType uCallType;// Type of call
-	private double uServiceTime;
-	private double uAfterCallWorkTime;
-	private double uToleratedWaitTime;
-	private double startWaitTime;
-   protected Call( SMTravel model){ this.model = model; }
+	protected double uServiceTime;
+	protected double uAfterCallWorkTime;
+	protected double uToleratedWaitTime;
+	protected double startWaitTime;
+    protected Call( SMTravel model){ this.model = model; }
 	//double startWaitTime;  // Time a customer enters a line
 
 
