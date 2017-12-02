@@ -1,7 +1,11 @@
 package simModel;
 
-class StaffChange{
-    SMTravel model;
+import simulationModelling.ScheduledAction;
+
+class StaffChange extends ScheduledAction {
+
+    SMTravel model; // To access the complete model
+
     public StaffChange(SMTravel model) { this.model = model; }
 
     // Implementation of timeSequence
@@ -17,7 +21,6 @@ class StaffChange{
 
     protected void actionEvent(double shift) {
         //Staff Change action sequence
-
-        ProcessingStaffChange(shift);
+        ProcessingStaffChange(shift)
     }
 }
