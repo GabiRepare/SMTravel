@@ -36,7 +36,7 @@ public class SMTravel extends AOSimulationModel
 	// Output values - define the public methods that return values
 	// required for experimentation.
 
-	// Constructor
+	// TODO: Constructor
 	public SMTravel(double t0time, double tftime, /*define other args,*/ Seeds sd)
 	{
 		// Initialise parameters here
@@ -57,7 +57,7 @@ public class SMTravel extends AOSimulationModel
 
 	/************  Implementation of Data Modules***********/	
 	/*
-	 * Testing preconditions
+	 * TODO: Testing preconditions
 	 */
 	protected void testPreconditions(Behaviour behObj)
 	{
