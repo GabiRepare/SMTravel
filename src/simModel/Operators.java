@@ -4,7 +4,7 @@ public class Operators {
 	 SMTravel model;
 		protected int numFreeOperators;  // Number of free operator 
 		protected int addNumOperators;  // Number of operator to add during busy periods, this attribute is a parameter
-
+		protected int[][] OperatorQt[uOperatorsShift, uOperatorsType]; //
 		enum OperatorType
 		{
 			GOLD(Constants.GOLD),
@@ -22,5 +22,29 @@ public class Operators {
 				return value;
 			}
 		}
-		OperatorType uOperatorsType; 
+		enum OperatorShift
+		{
+			SHIFT_1(0),
+			SHIFT_2(60),
+			SHIFT_3(120),
+			SHIFT_4(180),
+			SHIFT_5(240),
+			SHIFT_6(300),
+			SHIFT_7(360),
+			SHIFT_8(400);
+			private int value;
+
+			private OperatorShift(int value)
+			{
+				this.value = value;
+			}
+			public int getValue()
+			{
+				return value;
+			}
+		}
+		OperatorType uOperatorsType;
+		OperatorShift uOperatorsShift;
+
+
 }
