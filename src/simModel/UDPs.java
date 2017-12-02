@@ -1,12 +1,15 @@
 package simModel;
 
+import simModel.Call.CustomerType;
+public class UDPs
 
 public class UDPs
 {
-	ModelName model;  // for accessing the clock
-	
+	SMTravel model;  // for accessing the clock
+    protected Call call = new Call(model);
 	// Constructor
-	protected UDPs(ModelName model) { this.model = model; }
+	protected UDPs(SMTravel model) { this.model = model; }
+
 
 
 	// Translate User Defined Procedures into methods
@@ -15,9 +18,6 @@ public class UDPs
         if (callType == Constants.REGULAR)
         {
             simModel.RgTrunkLine.numEmptyTrunkLine = max(numTrunkLineInUse - numReserveLine, 0);
-        }
-        else
-        {
             simModel.RgTrunkLine.numEmptyTrunkLine = numTrunkLine - numTrunkLineInUse;
         }
 
@@ -47,17 +47,48 @@ public class UDPs
         {
             simModel.SSOV.numBusySignal++;
         }
+        else
+        {
+            simModel.RgTrunkLine.numEmptyTrunkLine = numTrunkLine - numTrunkLineInUse;
     }
 
-    protected void ProcessTalkToOperator(int operatorType)
+    }
+    protected void CallRegistration(Call.CustomerType uCustomerType)
     {
-        if(operatorType == Constants.GOLD) {
+        TtrunkLineReadyToAcceptCall(uCustomerType, simModel.RgTrunkLine.numTrunkLineInUse)
+        if(simModel.RgTrunkLine.numEmptyTrunkLine>0 && simModel.RgTrunkLine.numEmptyTrunkLine > simModel.TrunkLine.numReservedLine)
+        {
+            if(simModel.RgTrunkLine.numEmptyTrunkLine > simModel.RgTrunkLine.numReservedLine)
+            {
+                simModel.RgTrunkLine.numTrunkLineInUse++;
+                simModel.QwaitLine[uCustomerType].insertQueue(caller);
+            }
+        }
+        else if(simModle.RGTrunkLine.numReservedLine> 0 AND
+        simModel.RgTrunkLine.numEmptyTrunkLine <= simModel.RgTrunkLine.RgTrunkLine.numReservedLine)
+        {
+            if(uCustomerType.toString()=="GOLD" ||uCustomerType.toString()=="SILVER")
+            {
+
+                simModel.RgTrunkLine.numTrunkLineInUse++;
+                simModel.QwaitLine[caller.uCustomerType].insertQueue(caller);
+            }
+        }
+        else if(simModel.RgTrunkLine.numEmptyTrunkLine == 0)
+        {
+            simModel.SSOV.numBusySignal++;
+        }
+    }
+
+    protected void processTalkToOperator(Operators.OperatorType operatorType)
+    {
+        if( operatorType.toString()=="GOLD" ) {
             if (simModel.QwaitLine[GOLD].length > 0)
             {
                 simModel.QwaitLine[Gold].RemoveQueue(simModle.QwaitLine[GOLD].length -1);
             }
         }
-        else if(operatorType == Constants.SILVER)
+        else if( operatorType.toString()=="SILVER" )
         {
             if (simModel.QwaitLine[GOLD].length > 0)
             {
