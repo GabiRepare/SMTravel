@@ -12,6 +12,7 @@ public class Seeds
 	int silverstm;   // silver customer service time
 	int regularstm; //regular customer service time
 	int callType; //call type
+	//after serve time
 	int goldaftstm;
 	int sliveraftstm;
 	int regularaftstm;
