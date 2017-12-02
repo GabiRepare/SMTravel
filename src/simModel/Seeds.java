@@ -4,16 +4,23 @@ import cern.jet.random.engine.RandomSeedGenerator;
 
 public class Seeds 
 {
-	int seed1;   // comment 1
-	int seed2;   // comment 2
-	int seed3;   // comment 3
-	int seed4;   // comment 4
+	//not sure if any other input will be needed
+
+	int arr;   // customer arrival
+	int custType;   // customer type
+	int goldstm;   // gold customer service time
+	int silverstm;   // silver customer service time
+	int regularstm; //regular customer service time
+	int callType; //call type
+
 
 	public Seeds(RandomSeedGenerator rsg)
 	{
-		seed1=rsg.nextSeed();
-		seed2=rsg.nextSeed();
-		seed3=rsg.nextSeed();
-		seed4=rsg.nextSeed();
+		arr=rsg.nextSeed();
+		custType=rsg.nextSeed();
+		goldstm=rsg.nextSeed();
+		silverstm=rsg.nextSeed();
+		regularstm=rsg.nextSeed();
+		callType=rsg.nextSeed();
 	}
 }

@@ -19,7 +19,7 @@ class StaffChange extends ScheduledAction {
         return(nxtTime);
     }
 
-    protected void actionEvent() {
+    protected void actionEvent(double shift) {
         //Staff Change action sequence
         ProcessingStaffChange(shift)
     }
