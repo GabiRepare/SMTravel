@@ -1,16 +1,17 @@
 package simModel;
 
+import simulationModelling.ScheduledAction;
 
 class CallHangUp extends ScheduledAction{
 
-    simModel model; //reference to model object
+    :wsimModel model; //reference to model object
     CallHangUp(simModel caller){ this.model = model; }
 
     public double timeSequence(){
         //needs other classes
     }
 
-    public void actionEvent(Call uCallType ){
+    public void actionEvent(/*TODO doesnt want parameter->Call uCallType*/ ){
 
         //Call Hangup action sequence
 
