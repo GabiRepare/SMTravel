@@ -11,6 +11,7 @@ public class UDPs
     protected Call call = new Call(model);
     protected TrunkLines trunklines =new TrunkLines(model);
     protected Operators operators =new Operators(model);
+    protected Output output =new Output(model);
 	// Constructor
 	protected UDPs(SMTravel model) { this.model = model; }
 	
@@ -26,30 +27,30 @@ public class UDPs
         }
 
     }
-    protected void CallRegistration(Call caller)
+    protected void CallRegistration(Call call)
     {
-        TtrunkLineReadyToAcceptCall(caller.uCustomerType, trunklines.numTrunkLineInUse);
+        TtrunkLineReadyToAcceptCall(call.uCustomerType, trunklines.numTrunkLineInUse);
         if(trunklines.numEmptyTrunkLine>0 &&trunklines.numEmptyTrunkLine > trunklines.numReservedLine)
         {
             if(trunklines.numEmptyTrunkLine > trunklines.numReservedLine)
             {
                 trunklines.numTrunkLineInUse++;
-                simModel.QwaitLine[caller.uCustomerType].insertQueue(caller);
+                model.qWaitLines[call.uCustomerType].insertQueue(call);
             }
         }
         else if(trunklines.numReservedLine> 0 &&
        trunklines.numEmptyTrunkLine <= trunklines.numReservedLine)
         {
-            if(caller.uCustomerType.getValue() == Constants.GOLD||caller.uCustomerType.getValue() == Constants.SILVER)
+            if(call.uCustomerType.getValue() == Constants.GOLD||call.uCustomerType.getValue() == Constants.SILVER)
             {
 
                 trunklines.numTrunkLineInUse++;
-                simModel.QwaitLine[caller.uCustomerType].insertQueue(caller);
+                model.qWaitLines[call.uCustomerType].insertQueue(call);
             }
         }
         else if(trunklines.numEmptyTrunkLine == 0)
         {
-            simModel.SSOV.numBusySignal++;
+            output.numBusySignal++;
         }
         else
         {
@@ -65,57 +66,57 @@ public class UDPs
             if(trunklines.numEmptyTrunkLine > trunklines.numReservedLine)
             {
                 trunklines.numTrunkLineInUse++;
-                simModel.QwaitLine[uCustomerType].insertQueue(caller);
+                model.qWaitLines[uCustomerType].insertQueue(call);
             }
         }
         else if(trunklines.numReservedLine> 0 &&
-       trunklines.numEmptyTrunkLine <= simModel.RgTrunkLine.RgTrunkLine.numReservedLine)
+       trunklines.numEmptyTrunkLine <= trunklines.numReservedLine)
         {
             if(uCustomerType.getValue()==Constants.GOLD ||uCustomerType.getValue()==Constants.SILVER)
             {
 
                 trunklines.numTrunkLineInUse++;
-                simModel.QwaitLine[caller.uCustomerType].insertQueue(caller);
+                model.qWaitLines[call.uCustomerType].insertQueue(call);
             }
         }
         else if(trunklines.numEmptyTrunkLine == 0)
         {
-            simModel.SSOV.numBusySignal++;
+            output.numBusySignal++;
         }
     }
 
     protected void processTalkToOperator(Operators.OperatorType operatorType)
     {
         if( operatorType.getValue()==Constants.GOLD ) {
-            if (simModel.QwaitLine[GOLD].length > 0)
+            if (model.qWaitLines[Constants.GOLD].size() > 0)
             {
-                simModel.QwaitLine[Gold].RemoveQueue(simModle.QwaitLine[GOLD].length -1);
+                model.qWaitLines[Constants.GOLD].RemoveQueue(model.qWaitLines[Constants.GOLD].size() -1);
             }
         }
         else if( operatorType.getValue() == Constants.SILVER )
         {
-            if (simModel.QwaitLine[GOLD].length > 0)
+            if (model.qWaitLines[Constants.GOLD].size() > 0)
             {
-                simModel.QwaitLine[Gold].RemoveQueue(simModle.QwaitLine[GOLD].length -1);
+                model.qWaitLines[Constants.GOLD].RemoveQueue(model.qWaitLines[Constants.GOLD].size() -1);
             }
-            else if(simModel.QwaitLine[SILVER].length > 0)
+            else if(model.qWaitLines[Constants.SILVER].size() > 0)
             {
-                simModel.QwaitLine[SILVER].RemoveQueue(simModle.QwaitLine[SILVER].length -1);
+                model.qWaitLines[Constants.SILVER].RemoveQueue(model.qWaitLines[Constants.SILVER].size() -1);
             }
         }
         else
         {
-            if (simModel.QwaitLine[GOLD].length > 0)
+            if (model.qWaitLines[Constants.GOLD].size() > 0)
             {
-                simModel.QwaitLine[Gold].RemoveQueue(simModle.QwaitLine[GOLD].length -1);
+                model.qWaitLines[Constants.Gold].RemoveQueue(model.qWaitLines[Constants.GOLD].size() -1);
             }
-            else if(simModel.QwaitLine[SILVER].length > 0)
+            else if(model.qWaitLines[Constants.SILVER].size() > 0)
             {
-                simModel.QwaitLine[SILVER].RemoveQueue(simModle.QwaitLine[SILVER].length -1);
+                model.qWaitLines[Constants.SILVER].RemoveQueue(model.qWaitLines[Constants.SILVER].size() -1);
             }
-            else if(simModel.QwaitLine[REGULAR].length > 0)
+            else if(model.qWaitLines[Constants.REGULAR].size() > 0)
             {
-                simModel.QwaitLine[REGULAR].RemoveQueue(simModle.QwaitLine[REGULAR].length -1);
+                model.qWaitLines[Constants.REGULAR].RemoveQueue(model.qWaitLines[Constants.REGULAR].size() -1);
             }
         }
 

@@ -13,10 +13,10 @@ class Output
     // DSOVs available in the OutputSequence objects
     // If seperate methods required to process Trajectory or Sample
     // Sequences - add them here
-	private int numLongWait;
-	private int numServed;
-	private int numBusySignal;
-	private int numofArrival;
+	protected int numLongWait;
+	protected int numServed;
+	protected int numBusySignal;
+	protected int numofArrival;
 
 	public int getNumLongWait() {
 		return numLongWait;

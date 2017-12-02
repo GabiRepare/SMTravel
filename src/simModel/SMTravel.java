@@ -1,5 +1,7 @@
 package simModel;
 
+import java.util.ArrayList;
+
 import simulationModelling.AOSimulationModel;
 import simulationModelling.Behaviour;
 import simulationModelling.SequelActivity;
@@ -11,9 +13,19 @@ public class SMTravel extends AOSimulationModel
 	// Constants available from Constants class
 	/* Parameter */
         // Define the parameters
-
 	/*-------------Entity Data Structures-------------------*/
 	/* Group and Queue Entities */
+	//TODO: make sure it works with TrunkLines class
+	protected double closingTime;
+	protected TrunkLines rgTrunkLines = new TrunkLines(this);
+	protected Operators rgOperator = new Operators(this);
+
+	//protected Queue<CallType> qWaitLines = new Queue<CallType>();
+	protected ArrayList<Call>[] qWaitLines = new ArrayList<Call>[3];
+	qWaitLines[0] = new ArrayList<Call>();
+	qWaitLines[1] = new ArrayList<Call>();
+	qWaitLines[2] = new ArrayList<Call>();
+
 	// Define the reference variables to the various 
 	// entities with scope Set and Unary
 	// Objects can be created here or in the Initialise Action
@@ -25,22 +37,21 @@ public class SMTravel extends AOSimulationModel
 	protected RVPs rvp;  // Reference to rvp object - object created in constructor
 	protected DVPs dvp = new DVPs(this);  // Reference to dvp object
 	protected UDPs udp = new UDPs(this);
-	protected Call call=new Call(this);
+	protected Call icCall=new Call(this);
 	// Output object
 	protected Output output = new Output(this);
 	//call getters in output you can get any values you want
 	// Output values - define the public methods that return values
 	// required for experimentation.
 
-
-	// Constructor
+	// TODO: Constructor
 	public SMTravel(double t0time, double tftime, /*define other args,*/ Seeds sd)
 	{
 		// Initialise parameters here
 		
 		// Create RVP object with given seed
 		rvp = new RVPs(this,sd);
-		
+
 		// rgCounter and qCustLine objects created in Initalise Action
 		
 		// Initialise the simulation model
@@ -54,7 +65,7 @@ public class SMTravel extends AOSimulationModel
 
 	/************  Implementation of Data Modules***********/	
 	/*
-	 * Testing preconditions
+	 * TODO: Testing preconditions
 	 */
 	protected void testPreconditions(Behaviour behObj)
 	{
@@ -63,7 +74,6 @@ public class SMTravel extends AOSimulationModel
 
 		// Check preconditions of Interruptions in Extended Activities
 	}
-	protected double closingTime;
 	
 	public void eventOccured()
 	{
@@ -82,5 +92,8 @@ public class SMTravel extends AOSimulationModel
 		seqAct.startingEvent();
 		scheduleActivity(seqAct);
 	}	
+	public void insertQueue(Call call) {
+		
+	}
 
 }
