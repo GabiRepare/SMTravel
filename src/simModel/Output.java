@@ -1,48 +1,43 @@
-package simModel;
+g
 
 class Output 
 {
 	SMTravel model;
-	
 	protected Output(SMTravel md) { model = md; }
-    // Use OutputSequence class to define Trajectory and Sample Sequences
-    // Trajectory Sequences
 
-    // Sample Sequences
-
-    // DSOVs available in the OutputSequence objects
-    // If seperate methods required to process Trajectory or Sample
-    // Sequences - add them here
-	private int numLongWait;
-	private int numServed;
-	private int numBusySignal;
-	private int numofArrival;
-
-	public int getNumLongWait() {
-		return numLongWait;
-	}
-	public void setNumLongWait(int numLongWait) {
-		this.numLongWait = numLongWait;
-	}
-	public int getNumServed() {
-		return numServed;
-	}
-	public void setNumServed(int numServed) {
-		this.numServed = numServed;
-	}
-	public int getNumBusySignal() {
-		return numBusySignal;
-	}
-	public void setNumBusySignal(int numBusySignal) {
-		this.numBusySignal = numBusySignal;
-	}
-	public int getNumofArrival() {
-		return numofArrival;
-	}
-	public void setNumofArrival(int numofArrival) {
-		this.numofArrival = numofArrival;
-	}
-	
     // SSOVs
-	protected static int
+	protected static int numLongWait[Constants.GOLD];
+	protected static int numLongWait[Constants.SILVER];
+	protected static int numLongWait[Constants.REGULAR];
+	protected static int numLongWaitTotal = numLongWait[Constants.GOLD] + numLongWait[Constants.SILVER] + numLongWait[Constants.REGULAR];
+	protected static int numCallProcessed[Constants.GOLD];
+	protected static int numCallProcessed[Constants.SILVER];
+	protected static int numCallProcessed[Constants.REGULAR];
+	protected static int numBusySignal[Constants.GOLD];
+	protected static int numBusySignal[Constants.SILVER];
+	protected static int numBusySignal[Constants.REGULAR];
+	protected static int maxTrunkLineUsed;
+
+	public void initNumLongWait(){
+		numLongWait[Constants.GOLD] = 0;
+		numLongWait[Constants.SILVER] = 0;
+		numLongWait[Constants.REGULAR] = 0;
+		numLongWaitTotal = 0;
+	}
+
+	public void initNumCallProcessed(){
+		numCallProcessed[Constants.GOLD] = 0;
+		numCallProcessed[Constants.SILVER] = 0;
+		numCallProcessed[Constants.REGULAR] = 0;
+	}
+
+	public void initNumBusySignal(){
+		numBusySignal[Constants.GOLD] = 0;
+		numBusySignal[Constants.SILVER] = 0;
+		numBusySignal[Constants.REGULAR] = 0;
+	}
+
+	public void initMaxTrunkLineUsed(){
+		maxTrunkLineUsed = 0;
+	}
 }

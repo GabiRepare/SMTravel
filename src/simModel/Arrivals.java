@@ -23,7 +23,7 @@ class Arrivals extends ScheduledAction
         icCall.uStartWaitTime = model.getClock();
         icCall.uToleratedWaitTime = model.rvp.uToleratedWaitTime(icCall.uCustomerType)
         CallRegistration(iC.Call.uCustomerType);
-        SSOV.numCallProcessed++;
+        ssov.numCallProcessed++;
     }
 
 }
