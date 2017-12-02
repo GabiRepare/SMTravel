@@ -35,7 +35,7 @@ public class UDPs
             if(trunklines.numEmptyTrunkLine > trunklines.numReservedLine)
             {
                 trunklines.numTrunkLineInUse++;
-                model.qWaitLines[call.uCustomerType].insertQueue(call);
+                model.qWaitLines[call.uCustomerType.getValue()].add(call);
             }
         }
         else if(trunklines.numReservedLine> 0 &&
@@ -45,7 +45,7 @@ public class UDPs
             {
 
                 trunklines.numTrunkLineInUse++;
-                model.qWaitLines[call.uCustomerType].insertQueue(call);
+                model.qWaitLines[call.uCustomerType.getValue()].add(call);
             }
         }
         else if(trunklines.numEmptyTrunkLine == 0)
@@ -66,7 +66,7 @@ public class UDPs
             if(trunklines.numEmptyTrunkLine > trunklines.numReservedLine)
             {
                 trunklines.numTrunkLineInUse++;
-                model.qWaitLines[uCustomerType].insertQueue(call);
+                model.qWaitLines[uCustomerType.getValue()].add(call);
             }
         }
         else if(trunklines.numReservedLine> 0 &&
@@ -76,7 +76,7 @@ public class UDPs
             {
 
                 trunklines.numTrunkLineInUse++;
-                model.qWaitLines[call.uCustomerType].insertQueue(call);
+                model.qWaitLines[call.uCustomerType.getValue()].add(call);
             }
         }
         else if(trunklines.numEmptyTrunkLine == 0)
@@ -90,33 +90,33 @@ public class UDPs
         if( operatorType.getValue()==Constants.GOLD ) {
             if (model.qWaitLines[Constants.GOLD].size() > 0)
             {
-                model.qWaitLines[Constants.GOLD].RemoveQueue(model.qWaitLines[Constants.GOLD].size() -1);
+                model.qWaitLines[Constants.GOLD].remove(model.qWaitLines[Constants.GOLD].size() -1);
             }
         }
         else if( operatorType.getValue() == Constants.SILVER )
         {
             if (model.qWaitLines[Constants.GOLD].size() > 0)
             {
-                model.qWaitLines[Constants.GOLD].RemoveQueue(model.qWaitLines[Constants.GOLD].size() -1);
+                model.qWaitLines[Constants.GOLD].remove(model.qWaitLines[Constants.GOLD].size() -1);
             }
             else if(model.qWaitLines[Constants.SILVER].size() > 0)
             {
-                model.qWaitLines[Constants.SILVER].RemoveQueue(model.qWaitLines[Constants.SILVER].size() -1);
+                model.qWaitLines[Constants.SILVER].remove(model.qWaitLines[Constants.SILVER].size() -1);
             }
         }
         else
         {
             if (model.qWaitLines[Constants.GOLD].size() > 0)
             {
-                model.qWaitLines[Constants.Gold].RemoveQueue(model.qWaitLines[Constants.GOLD].size() -1);
+                model.qWaitLines[Constants.GOLD].remove(model.qWaitLines[Constants.GOLD].size() -1);
             }
             else if(model.qWaitLines[Constants.SILVER].size() > 0)
             {
-                model.qWaitLines[Constants.SILVER].RemoveQueue(model.qWaitLines[Constants.SILVER].size() -1);
+                model.qWaitLines[Constants.SILVER].remove(model.qWaitLines[Constants.SILVER].size() -1);
             }
             else if(model.qWaitLines[Constants.REGULAR].size() > 0)
             {
-                model.qWaitLines[Constants.REGULAR].RemoveQueue(model.qWaitLines[Constants.REGULAR].size() -1);
+                model.qWaitLines[Constants.REGULAR].remove(model.qWaitLines[Constants.REGULAR].size() -1);
             }
         }
 
