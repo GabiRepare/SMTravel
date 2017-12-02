@@ -10,12 +10,12 @@ class CallHangUp extends ScheduledAction{
         //needs other classes
     }
 
-    public void actionEvent(Call uCallType ){
+    public void actionEvent(Call call ){
 
         //Call Hangup action sequence
 
         //needs to be fixed based on other classes
-        model.qWaitLines.remove(uCallType);
+        model.qWaitLines.remove(call));
     }
 
 }

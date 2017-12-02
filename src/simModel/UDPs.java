@@ -18,18 +18,18 @@ public class UDPs
 
 
 	// Translate User Defined Procedures into methods
-  	protected void TtrunkLineReadyToAcceptCall(int callType, int numTrunkLineInUse)
+  	protected int TrunkLineReadyToAcceptCall(Call.CustomerType customerType, int numTrunkLineInUse)
     {
-        if (callType == Constants.REGULAR)
+        if (customerType.getValue() == Constants.REGULAR)
         {
-        	trunklines.numEmptyTrunkLine = Math.max(trunklines.numTrunkLineInUse - trunklines.numReservedLine, 0);
-           trunklines.numEmptyTrunkLine = trunklines.numTrunkLine - numTrunkLineInUse;
-        }
-
+        	return Math.max(trunklines.numTrunkLineInUse - trunklines.numReservedLine, 0);}
+        else  
+        return trunklines.numTrunkLine - numTrunkLineInUse;
+        
     }
     protected void CallRegistration(Call call)
     {
-        TtrunkLineReadyToAcceptCall(call.uCustomerType, trunklines.numTrunkLineInUse);
+    	trunklines.numEmptyTrunkLine = TrunkLineReadyToAcceptCall(call.uCustomerType, trunklines.numTrunkLineInUse);
         if(trunklines.numEmptyTrunkLine>0 &&trunklines.numEmptyTrunkLine > trunklines.numReservedLine)
         {
             if(trunklines.numEmptyTrunkLine > trunklines.numReservedLine)
@@ -60,7 +60,7 @@ public class UDPs
     }
     protected void CallRegistration(Call.CustomerType uCustomerType)
     {
-        TtrunkLineReadyToAcceptCall(uCustomerType, trunklines.numTrunkLineInUse);
+    	trunklines.numEmptyTrunkLine =   TrunkLineReadyToAcceptCall(uCustomerType, trunklines.numTrunkLineInUse);
         if(trunklines.numEmptyTrunkLine>0 &&trunklines.numEmptyTrunkLine > trunklines.numReservedLine)
         {
             if(trunklines.numEmptyTrunkLine > trunklines.numReservedLine)

@@ -40,9 +40,6 @@ public class SMTravel extends AOSimulationModel
 	protected Call icCall=new Call(this);
 	// Output object
 	protected Output output = new Output(this);
-	//call getters in output you can get any values you want
-	// Output values - define the public methods that return values
-	// required for experimentation.
 
 	// TODO: Constructor
 	public SMTravel(double t0time, double tftime, /*define other args,*/ Seeds sd)
