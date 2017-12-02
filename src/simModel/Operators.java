@@ -20,4 +20,5 @@ public class Operators {
 				      return "REGULAR";
 				    }}};
 		OperatorType uOperatorsType; 
+		
 }
