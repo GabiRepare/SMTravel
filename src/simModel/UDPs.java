@@ -17,26 +17,15 @@ public class UDPs
 	
 
 
-<<<<<<< HEAD
 	// Translate User Defined Procedures into methods
   	protected int TrunkLineReadyToAcceptCall(Call.CustomerType customerType, int numTrunkLineInUse)
-=======
-  	protected int TtrunkLineReadyToAcceptCall(int callType, int numTrunkLineInUse)
->>>>>>> 7e982e15d1513d6f795926a8e8a10ec0069ef259
     {
         if (customerType.getValue() == Constants.REGULAR)
         {
-<<<<<<< HEAD
         	return Math.max(trunklines.numTrunkLineInUse - trunklines.numReservedLine, 0);}
         else  
         return trunklines.numTrunkLine - numTrunkLineInUse;
         
-=======
-            return max(numTrunkLineInUse - numReserveLine, 0);
-        } else {
-            return numTrunkLine - numTrunkLineInUse;
-
->>>>>>> 7e982e15d1513d6f795926a8e8a10ec0069ef259
     }
     protected void CallRegistration(Call call)
     {
