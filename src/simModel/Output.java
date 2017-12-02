@@ -44,4 +44,5 @@ class Output
 	}
 	
     // SSOVs
+	/*TODO whats that->protected static int*/
 }

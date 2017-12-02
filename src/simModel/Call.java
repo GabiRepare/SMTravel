@@ -3,7 +3,12 @@ package simModel;
 public class Call {
    SMTravel model; //reference to model object
 	//TODO fix this constant thing
-	enum CustomerType { GOLD(0),SILVER(1),REGULAR(2);
+	enum CustomerType
+	{
+		GOLD(Constants.GOLD),
+		SILVER(Constants.SILVER),
+		REGULAR(Constants.REGULAR);
+
 		private int value;
 
 		private CustomerType(int value)
@@ -13,11 +18,14 @@ public class Call {
 		public int getValue()
 		{
 			return value;
-		}};
+		}
+	}
 
-	enum CallType{INFORMATION(0),
-		RESERVATION(1),
-		CHANGE(2);
+	enum CallType
+	{
+		INFORMATION(Constants.INFORMATION),
+		RESERVATION(Constants.RESERVATION),
+		CHANGE(Constants.CHANGE);
 		private int value;
 
 		private CallType(int value)
@@ -28,7 +36,7 @@ public class Call {
 		{
 			return value;
 		}
-	};
+	}
 	CustomerType uCustomerType;
 	CallType uCallType;// Type of call
 	private double uServiceTime;
