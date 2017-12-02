@@ -5,5 +5,5 @@ class TrunkLines{
     protected int numReservedLine; //Number of reserved trunk lines
     protected int numTrunkLine; //Total number of trunk lines
 
-    
+    //TODO: Any methods needed?
 }

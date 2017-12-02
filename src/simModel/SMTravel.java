@@ -17,7 +17,12 @@ public class SMTravel extends AOSimulationModel
 	protected TrunkLines rgTrunkLines = new TrunkLines();
 	protected Operators rgOperator = new Operator();
 
-	protected Queue<CallType> qWaitLines = new Queue<CallType>();
+	//protected Queue<CallType> qWaitLines = new Queue<CallType>();
+	protect ArrayList<Call>[] qWaitLines = new ArrayList<Call>[3];
+	qWaitLines[0] = new ArrayList<Call>();
+	qWaitLines[1] = new ArrayList<Call>();
+	qWaitLines[2] = new ArrayList<Call>();
+
 	// Define the reference variables to the various 
 	// entities with scope Set and Unary
 	// Objects can be created here or in the Initialise Action
