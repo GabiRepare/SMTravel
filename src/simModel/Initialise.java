@@ -4,10 +4,10 @@ import simulationModelling.ScheduledAction;
 
 class Initialise extends ScheduledAction
 {
-	ModelName model;
+	SMTravel model;
 	
 	// Constructor
-	protected Initialise(ModelName model) { this.model = model; }
+	protected Initialise(SMTravel model) { this.model = model; }
 
 	double [] ts = { 0.0, -1.0 }; // -1.0 ends scheduling
 	int tsix = 0;  // set index to first entry.
@@ -18,8 +18,14 @@ class Initialise extends ScheduledAction
 
 	protected void actionEvent() 
 	{
+		//need to clear queue line and group 
 		// System Initialisation
                 // Add initilisation instructions 
+		model.output.setNumServed(0);
+		model.output.setNumLongWait(0);
+		model.output.setNumBusySignal(0);
+		model.output.setNumofArrival(0);
+
 	}
 	
 

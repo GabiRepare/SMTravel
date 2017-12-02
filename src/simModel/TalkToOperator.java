@@ -5,38 +5,29 @@ import simulationModelling.ConditionalActivity;
 class TalkToOperator extends ConditionalActivity {
     SMTravel model;
     //Customer Type is definied in Call.java, double check
-    private Call call = new Call(model);
 
+    protected Call.CallType callType;
+    protected  Operators.OperatorType operatorType;
+
+    protected Call.CustomerType uCustomerType;
+    protected UDPs udp = new UDPs(model);
     public TalkToOperator(SMTravel model) { this.model = model; }
 
     protected static boolean precondition(SMTravel simModel){
+        boolean returnValue = false;
         //this may need to be modified based on other classes
-        if(call.uCostmerType == Constant.GOLD)
-        {
-            if(simModel.Operator[GOLD].numFreeOperator>0 ||
-               simModel.Operator[SILVER].numFreeOperator>0 ||
-               simModel.Operator[REGULAR].numFreeOperator>0)
-            {
-                return true;
-            }
+        if(simModel.rgOperator.type == simModel.n && simModel.n != 0){
+            returnValue = true;
         }
-        else if (call.uCostmerType == Constant.SILVER || Constant.REGULAR)
-        {
-            if(simModel.Operator[SILVER].numFreeOperator>0 ||
-               simModel.Operator[REGULAR].numFreeOperator>0
-            {
-                return true;
-            }
-        }
-        return false;
+        return(returnValue);
     }
 
     public void startingEvent(){
-        processTalkToOperator();
+        model.udp.processTalkToOperator(operatorType);
     }
 
     protected double duration(){
-        return (simModel.rvp.uServiceTime(call.CallType, simModel.Operator.uOperatorType));
+        return (model.rvp.uServiceTime(callType,operatorType));
     }
 
     protected void secondaryEvent(){
@@ -45,7 +36,7 @@ class TalkToOperator extends ConditionalActivity {
     }
 
     protected double secondaryDuration(){
-        return (uAfterCallWorkTime(call.uCustomerType));
+        return (model.rvp.uAfterCallWorkTime(uCustomerType));
     }
 
     protected void terminatingEvent(){

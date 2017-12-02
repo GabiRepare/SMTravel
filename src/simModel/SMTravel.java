@@ -6,7 +6,7 @@ import simulationModelling.SequelActivity;
 
 //
 // The Simulation model Class
-public class ModelName extends AOSimulationModel
+public class SMTravel extends AOSimulationModel
 {
 	// Constants available from Constants class
 	/* Parameter */
@@ -25,16 +25,16 @@ public class ModelName extends AOSimulationModel
 	protected RVPs rvp;  // Reference to rvp object - object created in constructor
 	protected DVPs dvp = new DVPs(this);  // Reference to dvp object
 	protected UDPs udp = new UDPs(this);
-
+	protected Call call=new Call(this);
 	// Output object
 	protected Output output = new Output(this);
-	
+	//call getters in output you can get any values you want
 	// Output values - define the public methods that return values
 	// required for experimentation.
 
 
 	// Constructor
-	public ModelName(double t0time, double tftime, /*define other args,*/ Seeds sd)
+	public SMTravel(double t0time, double tftime, /*define other args,*/ Seeds sd)
 	{
 		// Initialise parameters here
 		
@@ -83,5 +83,3 @@ public class ModelName extends AOSimulationModel
 	}	
 
 }
-
-
