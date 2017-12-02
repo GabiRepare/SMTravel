@@ -63,6 +63,7 @@ public class SMTravel extends AOSimulationModel
 
 		// Check preconditions of Interruptions in Extended Activities
 	}
+	protected double closingTime;
 	
 	public void eventOccured()
 	{

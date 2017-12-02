@@ -21,7 +21,7 @@ class RVPs
 	{ 
 		this.model = model; 
 		// Set up distribution functions
-		interArrDist = new Exponential(1.0/WMEAN1,  
+		interArrDist = new Exponential(1.0/REGULAR1,  
 				                       new MersenneTwister(sd.arr));
 		//uServeTime= new Triangular() ;
 		//for after service
@@ -34,6 +34,18 @@ class RVPs
 		riSrvTm = new Uniform(GIAFMIN,GIAFMAX,sd.regularaftstm);
 		rrSrvTm = new Uniform(GRAFMIN,GRAFMAX,sd.regularaftstm);
 		rcSrvTm = new Uniform(GCAFMIN,GCAFMAX,sd.regularaftstm);
+		
+		//serTime for 
+		giSerTM=new Uniform(1.2,3.75,sd.goldstm);
+		grSerTM=new Uniform(2.25,8.6,sd.goldstm);
+		gcSerTM=new Uniform(1.2,5.8,sd.goldstm);
+		siSerTM=new Uniform(1.2,3.75,sd.silverstm);
+		srSerTM=new Uniform(2.25,8.6,sd.silverstm);
+		scSerTM=new Uniform(1.2,5.8,sd.silverstm);
+		riSerTM=new Uniform(1.2,3.75,sd.regularstm);
+		rrSerTM=new Uniform(2.25,8.6,sd.regularstm);
+		rcSerTM=new Uniform(1.2,5.8,sd.regularstm);
+		
 		customerTypeRandGen = new MersenneTwister(sd.custType);
 		callTypeRandGen = new MersenneTwister(sd.callType);
 	}
@@ -63,6 +75,50 @@ class RVPs
 	protected final static double CARDHOLDER10 =269 ;
 	protected final static double CARDHOLDER11 = 145;
 	protected final static double CARDHOLDER12 =69 ;
+	
+	
+	protected Exponential interArrDist;  // Customer Inter Arr. Times
+	protected double duC()  // for getting next value of uW(t)
+	{
+	  double nxtArrival;
+	  double mean;
+      if(0 <= model.getClock()&&model.getClock() < 60) mean = CARDHOLDER1;
+	  else if (60<=model.getClock()&&model.getClock() < 120) mean = CARDHOLDER2;
+	  else if(120<=model.getClock()&&model.getClock() < 180) mean = CARDHOLDER3;
+	  else if (180<=model.getClock()&&model.getClock() < 240)mean = CARDHOLDER4;
+	  else if (240<=model.getClock()&&model.getClock() < 300)mean = CARDHOLDER5;
+	  else if (300<=model.getClock()&&model.getClock() < 360)mean = CARDHOLDER6;
+	  else if (360<=model.getClock()&&model.getClock() < 420)mean = CARDHOLDER7;
+	  else if (420<=model.getClock()&&model.getClock() < 480)mean = CARDHOLDER8;
+	  else if (480<=model.getClock()&&model.getClock() < 540)mean = CARDHOLDER9;
+	  else if (540<=model.getClock()&&model.getClock() < 600)mean = CARDHOLDER10;
+	  else if (600<=model.getClock()&& model.getClock() < 660)mean = CARDHOLDER11;
+	  else mean = CARDHOLDER12;
+      nxtArrival = model.getClock()+interArrDist.nextDouble(1.0/mean);
+      if(nxtArrival > model.closingTime) nxtArrival = -1.0;  // Ends time sequence
+	  return(nxtArrival);
+	}
+	protected double duR()  // for getting next value of uW(t)
+	{
+	  double nxtRegularArrival;
+	  double mean;
+      if(0<=model.getClock()&&model.getClock() < 60) mean = REGULAR1;
+	  else if (60<=model.getClock()&&model.getClock() < 120) mean = REGULAR2;
+	  else if(120<=model.getClock()&&model.getClock() < 180) mean = REGULAR3;
+	  else if (180<=model.getClock()&&model.getClock() < 240)mean = REGULAR4;
+	  else if (240<=model.getClock()&&model.getClock() < 300)mean = REGULAR5;
+	  else if (300<=model.getClock()&&model.getClock() < 360)mean = REGULAR6;
+	  else if (360<=model.getClock()&&model.getClock() < 420)mean = REGULAR7;
+	  else if (420<=model.getClock()&&model.getClock() < 480)mean = REGULAR8;
+	  else if (480<=model.getClock()&&model.getClock() < 540)mean = REGULAR9;
+	  else if (540<=model.getClock()&&model.getClock() < 600)mean = REGULAR10;
+	  else if (600<=model.getClock()&&model.getClock() < 660)mean = REGULAR11;
+	  else mean = REGULAR12;
+      nxtRegularArrival = model.getClock()+interArrDist.nextDouble(1.0/mean);
+      if(nxtRegularArrival > model.closingTime) nxtRegularArrival = -1.0;  // Ends time sequence
+	  return(nxtRegularArrival);
+	}
+	
 	
 	private final double PROPGOLD = 0.32;
 	private final double PROPSIL = 0.68;
@@ -121,47 +177,52 @@ class RVPs
 	private Uniform rrSrvTm;  // reservation
 	private Uniform rcSrvTm; //change
 	// Method
-	public double uServiceTime(Call.CallType callType, Operators.OperatorType operatorType)
-	{
-		double uServiceTime = 0;
-		if(operatorType ==Operators.OperatorType.GOLD) {uServiceTime = gSrvTm.nextDouble();}
-		if(operatorType == Operators.OperatorType.SILVER) { uServiceTime = sSrvTm.nextDouble();}
-		if(operatorType == Operators.OperatorType.REGULAR){ uServiceTime = rSrvTm.nextDouble();}
-		else System.out.println("rvpuSrvTm - invalid type"+operatorType);		
-		return(uServiceTime);
-	}	
-
-	public double uuServiceTime(Call.CallType callType, Operators.OperatorType operatorType){
+	public double triangularDistribution(double a, double b, double c, Uniform serTm) {
+		double rand=serTm.nextDouble();
+	    double F = (c - a) / (b - a);
+	    if (rand < F) {
+	        return a + Math.sqrt(rand * (b - a) * (c - a));
+	    } else {
+	        return b - Math.sqrt((1 - rand) * (b - a) * (b - c));
+	    }
+	}
+	private Uniform giSerTM;  // GOLD info  service
+	private Uniform grSerTM;  // reservation
+	private Uniform gcSerTM; //change
+	private Uniform siSerTM;  // GOLD info  service
+	private Uniform srSerTM;  // reservation
+	private Uniform scSerTM; //change
+	private Uniform riSerTM;  // GOLD info service
+	private Uniform rrSerTM;  // reservation
+	private Uniform rcSerTM; //change
+	public double uServiceTime(Call.CallType callType, Operators.OperatorType operatorType){
 		if(callType.toString()=="INFORMATION" && operatorType.toString()=="REGULAR" ) {
-			return ThreadLocalRandom.current().nextDouble(1.2, 3.75);
-		//return triangularDistribution(1.2, 2.05, 3.75);
+		return triangularDistribution(1.2, 2.05, 3.75,riSerTM);
 		}
 		if(callType.toString()=="RESERVATION" && operatorType.toString()=="REGULAR" ) {
-			return ThreadLocalRandom.current().nextDouble(2.25, 8.60);
-			//return triangularDistribution(2.25, 2.95, 8.60);
+			return triangularDistribution(2.25, 2.95, 8.60,rrSerTM);
 		}
 		if(callType.toString()=="CHANGE" && operatorType.toString()=="REGULAR" ) {
-			return ThreadLocalRandom.current().nextDouble(1.20, 5.80);
-			//return triangularDistribution(1.20, 1.90, 5.80);
-			//hi
+			return triangularDistribution(1.20, 1.90, 5.80,rcSerTM);
+			
 		}
 		if(callType.toString()=="INFORMATION" && operatorType.toString()=="GOLD" ) {
-			return ThreadLocalRandom.current().nextDouble(1.056,3.3);
+			return triangularDistribution(1.056, 1.804, 3.3,giSerTM);
 		}
 		if(callType.toString()=="RESERVATION" && operatorType.toString()=="GOLD" ) {
-			return ThreadLocalRandom.current().nextDouble(1.98,7.568);
+			return triangularDistribution(1.98, 2.596, 7.568,grSerTM);
 		}
 		if(callType.toString()=="CHANGE" && operatorType.toString()=="GOLD" ) {
-			return ThreadLocalRandom.current().nextDouble(1.056,5.104);
+			return triangularDistribution(1.056,1.672, 5.104,gcSerTM);
 		}
 		if(callType.toString()=="INFORMATION" && operatorType.toString()=="SILVER" ) {
-			return ThreadLocalRandom.current().nextDouble(1.14,3.5625);
+			return triangularDistribution(1.14,1.9475, 3.5625,siSerTM);
 		}
 		if(callType.toString()=="RESERVATION" && operatorType.toString()=="SILVER" ) {
-			return ThreadLocalRandom.current().nextDouble(2.1375,8.17);
+			return triangularDistribution(2.1375,2.8025, 8.17,srSerTM);
 		}
 		if(callType.toString()=="CHANGE" && operatorType.toString()=="SILVER" ) {
-			return ThreadLocalRandom.current().nextDouble(1.14,5.51);
+			return triangularDistribution(1.14,1.805, 5.51,scSerTM);
 		}
 		return 0;
 	}
