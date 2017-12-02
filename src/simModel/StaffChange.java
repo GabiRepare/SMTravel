@@ -19,8 +19,8 @@ class StaffChange extends ScheduledAction {
         return(nxtTime);
     }
 
-    protected void actionEvent(double shift) {
+    protected void actionEvent(/*TODO fix this ->double shift*/) {
         //Staff Change action sequence
-        ProcessingStaffChange(shift)
+        ProcessingStaffChange(shift);
     }
 }
