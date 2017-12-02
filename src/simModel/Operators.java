@@ -5,19 +5,22 @@ public class Operators {
 		protected int numFreeOperators;  // Number of free operator 
 		protected int addNumOperators;  // Number of operator to add during busy periods, this attribute is a parameter
 
-		enum OperatorType { GOLD
-			{@Override
-		    public String toString() {
-		      return "GOLD";
-		    }},SILVER
-			{@Override
-			    public String toString() {
-			      return "SILVER";
-			    }},
-			REGULAR
-			{@Override
-				    public String toString() {
-				      return "REGULAR";
-				    }}};
+		enum OperatorType
+		{
+			GOLD(Constants.GOLD),
+			SILVER(Constant.SILVER),
+			REGULAR(Constant.REGULAR);
+
+			private int value;
+
+			private OperatorType(int value)
+			{
+				this.value = value;
+			}
+			public int getValue()
+			{
+				return value;
+			}
+		}
 		OperatorType uOperatorsType; 
 }

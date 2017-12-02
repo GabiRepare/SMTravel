@@ -36,7 +36,7 @@ public class UDPs
         else if(simModle.RGTrunkLine.numReservedLine> 0 AND
         simModel.RgTrunkLine.numEmptyTrunkLine <= simModel.RgTrunkLine.RgTrunkLine.numReservedLine)
         {
-            if(caller.uCustomerType == GOLD or caller.uCustomerType == SILVER)
+            if(caller.uCustomerType == Constants.GOLD or caller.uCustomerType == Constants.SILVER)
             {
 
                 simModel.RgTrunkLine.numTrunkLineInUse++;
@@ -67,7 +67,7 @@ public class UDPs
         else if(simModle.RGTrunkLine.numReservedLine> 0 AND
         simModel.RgTrunkLine.numEmptyTrunkLine <= simModel.RgTrunkLine.RgTrunkLine.numReservedLine)
         {
-            if(uCustomerType.toString()=="GOLD" ||uCustomerType.toString()=="SILVER")
+            if(uCustomerType == Constants.GOLD ||uCustomerType == Constants.SILVER)
             {
 
                 simModel.RgTrunkLine.numTrunkLineInUse++;
@@ -82,36 +82,36 @@ public class UDPs
 
     protected void processTalkToOperator(Operators.OperatorType operatorType)
     {
-        if( operatorType.toString()=="GOLD" ) {
+        if( operatorType == Constants.GOLD ) {
             if (simModel.QwaitLine[GOLD].length > 0)
             {
                 simModel.QwaitLine[Gold].RemoveQueue(simModle.QwaitLine[GOLD].length -1);
             }
         }
-        else if( operatorType.toString()=="SILVER" )
+        else if( operatorType == Constants.SILVER )
         {
-            if (simModel.QwaitLine[GOLD].length > 0)
+            if (simModel.QwaitLine[Constants.GOLD].length > 0)
             {
-                simModel.QwaitLine[Gold].RemoveQueue(simModle.QwaitLine[GOLD].length -1);
+                simModel.QwaitLine[Constants.Gold].RemoveQueue(simModle.QwaitLine[GOLD].length -1);
             }
-            else if(simModel.QwaitLine[SILVER].length > 0)
+            else if(simModel.QwaitLine[Constants.SILVER].length > 0)
             {
-                simModel.QwaitLine[SILVER].RemoveQueue(simModle.QwaitLine[SILVER].length -1);
+                simModel.QwaitLine[Constants.SILVER].RemoveQueue(simModle.QwaitLine[Constants.SILVER].length -1);
             }
         }
         else
         {
-            if (simModel.QwaitLine[GOLD].length > 0)
+            if (simModel.QwaitLine[Constants.GOLD].length > 0)
             {
-                simModel.QwaitLine[Gold].RemoveQueue(simModle.QwaitLine[GOLD].length -1);
+                simModel.QwaitLine[Constants.Gold].RemoveQueue(simModle.QwaitLine[Constants.GOLD].length -1);
             }
-            else if(simModel.QwaitLine[SILVER].length > 0)
+            else if(simModel.QwaitLine[Constants.SILVER].length > 0)
             {
-                simModel.QwaitLine[SILVER].RemoveQueue(simModle.QwaitLine[SILVER].length -1);
+                simModel.QwaitLine[Constants.SILVER].RemoveQueue(simModle.QwaitLine[Constants.SILVER].length -1);
             }
-            else if(simModel.QwaitLine[REGULAR].length > 0)
+            else if(simModel.QwaitLine[Constants.REGULAR].length > 0)
             {
-                simModel.QwaitLine[REGULAR].RemoveQueue(simModle.QwaitLine[REGULAR].length -1);
+                simModel.QwaitLine[Constants.REGULAR].RemoveQueue(simModle.QwaitLine[Constants.REGULAR].length -1);
             }
         }
 
