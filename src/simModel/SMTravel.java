@@ -92,9 +92,6 @@ public class SMTravel extends AOSimulationModel
 		seqAct.startingEvent();
 		scheduleActivity(seqAct);
 	}	
-	public void insertQueue(Call call) {
-		this.qWaitLines.add(qWaitLines.size()-1,call);
-	}
 
 
 }
