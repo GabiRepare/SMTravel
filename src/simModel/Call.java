@@ -2,7 +2,7 @@ package simModel;
 
 public class Call {
    SMTravel model; //reference to model object
-	//TODO fix this constant thing
+
 	enum CustomerType
 	{
 		GOLD(Constants.GOLD),
@@ -28,7 +28,7 @@ public class Call {
 		CHANGE(Constants.CHANGE);
 		private int value;
 
-		private CallType(int value)
+		CallType(int value)
 		{
 			this.value = value;
 		}
@@ -37,7 +37,7 @@ public class Call {
 			return value;
 		}
 	}
-	public CustomerType uCustomerType;
+	CustomerType uCustomerType;
 	CallType uCallType;// Type of call
 	protected double uServiceTime;
 	protected double uAfterCallWorkTime;

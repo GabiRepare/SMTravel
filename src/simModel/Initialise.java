@@ -18,14 +18,17 @@ class Initialise extends ScheduledAction
 
 	protected void actionEvent() 
 	{
-		//need to clear queue line and group 
-		// System Initialisation
-                // Add initilisation instructions 
-		model.output.setNumServed(0);
-		model.output.setNumLongWait(0);
-		model.output.setNumBusySignal(0);
-		model.output.setNumofArrival(0);
-
+		//TODO need to clear queue line and group
+		//System Initialisation
+		model.output.setNumCallProcessedCardholder(0);
+		model.output.setNumCallProcessedRegular(0);
+		model.output.setNumLongWaitGold(0);
+		model.output.setNumLongWaitSilver(0);
+		model.output.setNumLongWaitRegular(0);
+		model.output.setNumBusySignalCarholder(0);
+		model.output.setNumBusySignalRegular(0);
+		model.output.setNumOfArrival(0);
+		model.output.setNumOfArrivalCardholder(0);
 	}
 	
 

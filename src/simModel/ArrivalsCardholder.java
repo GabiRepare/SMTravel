@@ -23,6 +23,6 @@ class ArrivalsCardholder extends ScheduledAction {
         icCall.startWaitTime = model.getClock();
         icCall.uToleratedWaitTime = model.rvp.uToleratedWaitTime(icCall.uCustomerType);
         model.udp.CallRegistration(icCall);
-        model.output.numServed++;
+        model.output.numCallProcessedCardholder++;
     }
 }

@@ -226,53 +226,51 @@ class RVPs
 		}
 		return 0;
 	}
-	public double uAfterCallWorkTime(Call.CustomerType uCustomerType, Call.CallType callType) {
+	public double uAfterCallWorkTime(Operators.OperatorType uOperatorsType, Call.CallType callType) {
 		double afterSrvTm=0;
-		if((uCustomerType==Call.CustomerType.GOLD) && (callType==Call.CallType.INFORMATION)) {
+		if((uOperatorsType.getValue()==Constants.GOLD) && (callType==Call.CallType.INFORMATION)) {
 			return afterSrvTm = giSrvTm.nextDouble();
 		}
-		if((uCustomerType==Call.CustomerType.GOLD) && (callType==Call.CallType.RESERVATION)) {
+		if((uOperatorsType.getValue()==Constants.GOLD) && (callType==Call.CallType.RESERVATION)) {
 			return afterSrvTm = grSrvTm.nextDouble();
 		}
-		if((uCustomerType==Call.CustomerType.GOLD) && (callType==Call.CallType.CHANGE)){
+		if((uOperatorsType.getValue()==Constants.GOLD) && (callType==Call.CallType.CHANGE)){
 			return afterSrvTm = gcSrvTm.nextDouble();
 		}
-		if((uCustomerType==Call.CustomerType.SILVER) && (callType==Call.CallType.INFORMATION)) {
+		if((uOperatorsType.getValue()==Constants.SILVER) && (callType==Call.CallType.INFORMATION)) {
 			return afterSrvTm = siSrvTm.nextDouble();
 		}
-		if((uCustomerType==Call.CustomerType.SILVER) && (callType==Call.CallType.RESERVATION)) {
+		if((uOperatorsType.getValue()==Constants.SILVER) && (callType==Call.CallType.RESERVATION)) {
 			return afterSrvTm = srSrvTm.nextDouble();
 		}
-		if((uCustomerType==Call.CustomerType.SILVER) && (callType==Call.CallType.CHANGE)){
+		if((uOperatorsType.getValue()==Constants.SILVER) && (callType==Call.CallType.CHANGE)){
 			return afterSrvTm = scSrvTm.nextDouble();}
-		if((uCustomerType==Call.CustomerType.REGULAR) && (callType==Call.CallType.INFORMATION)) {
+		if((uOperatorsType.getValue()==Constants.REGULAR) && (callType==Call.CallType.INFORMATION)) {
 				return afterSrvTm = riSrvTm.nextDouble();
 			}
-		if((uCustomerType==Call.CustomerType.REGULAR) && (callType==Call.CallType.RESERVATION)) {
+		if((uOperatorsType.getValue()==Constants.REGULAR) && (callType==Call.CallType.RESERVATION)) {
 				return afterSrvTm = rrSrvTm.nextDouble();
 			}
-		if((uCustomerType==Call.CustomerType.REGULAR) && (callType==Call.CallType.CHANGE)){
+		if((uOperatorsType.getValue()==Constants.REGULAR) && (callType==Call.CallType.CHANGE)){
 				return afterSrvTm = rcSrvTm.nextDouble();}
 		return afterSrvTm;
 		
 	}
 	public double uToleratedWaitTime(Call.CustomerType uCustomerType) {
-		if(uCustomerType==Call.CustomerType.GOLD) {
+		if(uCustomerType.getValue()==Constants.GOLD) {
 			return ThreadLocalRandom.current().nextDouble(8,17);
 		}
-		if(uCustomerType==Call.CustomerType.SILVER ) {
+		if(uCustomerType.getValue()==Constants.SILVER ) {
 			return ThreadLocalRandom.current().nextDouble(8,17);
 		}
-		if(uCustomerType==Call.CustomerType.REGULAR) {
+		if(uCustomerType.getValue()==Constants.REGULAR) {
 			return ThreadLocalRandom.current().nextDouble(12,30);
 		}
 		return 0;
 	}
- public double enterCardNumerTime(Call.CustomerType uCustomerType) {
-	 if(uCustomerType==Call.CustomerType.GOLD||uCustomerType==Call.CustomerType.SILVER  ) {
-			return ThreadLocalRandom.current().nextDouble(7,12);
-		}
-	 return 0;
+ public double enterCardNumerTime(int minWait, int maxWait) {
+
+	 return ThreadLocalRandom.current().nextDouble(minWait,maxWait);
  }
 
 }

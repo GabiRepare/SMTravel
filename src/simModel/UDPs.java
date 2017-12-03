@@ -42,7 +42,13 @@ public class UDPs {
                 model.qWaitLines[call.uCustomerType.getValue()].add(call);
             }
         } else if (trunklines.numEmptyTrunkLine == 0) {
-            output.numBusySignal++;
+            if(call.uCustomerType.getValue() == Constants.CARDHOLDER) {
+                model.output.numBusySignalCardholder++;
+            }
+            else
+            {
+                model.output.numBusySignalRegular++;
+            }
         }
     }
 
@@ -70,15 +76,25 @@ public class UDPs {
 
     }
 
-    protected void ProcessingStaffChange(Operators.OperatorType uOperatorsType, int shift) {
-        if (uOperatorsType.getValue() == Constants.GOLD) {
-            operators.numFreeOperators += operators.operatorQt[shift][Constants.GOLD];
+    protected void ProcessingStaffChange(int shift) {
+        operators.numFreeOperators += operators.operatorQt[shift][Constants.GOLD];
+        operators.numFreeOperators += operators.operatorQt[shift][Constants.SILVER];
+        operators.numFreeOperators += operators.operatorQt[shift][Constants.REGULAR];
+    }
+
+    protected double MaxQualityWaitTime(Call.CustomerType uCustomerType)
+    {
+        if(uCustomerType.getValue() == Constants.GOLD)
+        {
+            return 90/60; // converted to min.
         }
-        if (uOperatorsType.getValue() == Constants.SILVER) {
-            operators.numFreeOperators += operators.operatorQt[shift][Constants.SILVER];
+        else if(uCustomerType.getValue() == Constants.SILVER)
+        {
+            return 180/60;
         }
-        if (uOperatorsType.getValue() == Constants.REGULAR) {
-            operators.numFreeOperators += operators.operatorQt[shift][Constants.REGULAR];
+        else
+        {
+            return 900/60;
         }
     }
 }

@@ -15,7 +15,6 @@ class CallHangUp extends ScheduledAction{
 
     public void actionEvent()
     {
-
         //Call Hangup action sequence
         if(call.uCustomerType == Call.CustomerType.REGULAR)
         {

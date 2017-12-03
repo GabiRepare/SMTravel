@@ -2,6 +2,7 @@ package simModel;
 
 import java.util.ArrayList;
 
+import com.sun.tools.javac.comp.Enter;
 import simulationModelling.AOSimulationModel;
 import simulationModelling.Behaviour;
 import simulationModelling.SequelActivity;
@@ -31,7 +32,7 @@ public class SMTravel extends AOSimulationModel
 	
 	// References to RVP and DVP objects
 	protected RVPs rvp;  // Reference to rvp object - object created in constructor
-	protected DVPs dvp = new DVPs(this);  // Reference to dvp object
+	//protected DVPs dvp = new DVPs(this);  // Reference to dvp object
 	protected UDPs udp = new UDPs(this);
 	protected Call icCall=new Call(this);
 	// Output object
@@ -56,6 +57,10 @@ public class SMTravel extends AOSimulationModel
 		     // Schedule the first arrivals and employee scheduling
 		Initialise init = new Initialise(this);
 		scheduleAction(init);  // Should always be first one scheduled.
+		Arrivals arr = new Arrivals(this);
+		scheduleAction(arr);
+		ArrivalsCardholder arrCardholder = new ArrivalsCardholder(this);
+		scheduleAction(arrCardholder);
 		// Schedule other scheduled actions and acitvities here
 		qWaitLines[0] = new ArrayList<Call>();
 		qWaitLines[1] = new ArrayList<Call>();
@@ -73,8 +78,23 @@ public class SMTravel extends AOSimulationModel
 	protected void testPreconditions(Behaviour behObj)
 	{
 		reschedule (behObj);
+		if(EnterCardNumber.precondition(this) == true)
+		{
+			EnterCardNumber enterAccount = new EnterCardNumber(this);
+			enterAccount.startingEvent();
+			scheduleActivity(enterAccount);
+		}
+		else
+		{
+			qWaitLines[Constants.REGULAR].add(icCall);
+		}
 		// Check preconditions of Conditional Activities
-
+		if (TalkToOperator.precondition(this) == true)
+		{
+			TalkToOperator serviceCall = new TalkToOperator(this);
+			serviceCall.startingEvent();
+			scheduleActivity(serviceCall);
+		}
 		// Check preconditions of Interruptions in Extended Activities
 	}
 	

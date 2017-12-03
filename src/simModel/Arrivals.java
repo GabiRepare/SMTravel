@@ -18,12 +18,12 @@ class Arrivals extends ScheduledAction
     protected void actionEvent() {
         // Arrival Action Sequence SCS
         Call icCall  = new Call(model);
-        icCall.uCustomerType = Call.CustomerType.REGULAR;
+        icCall.uCustomerType = Call.CustomerType.values()[Constants.REGULAR];
         icCall.uCallType = model.rvp.uCallType();
         icCall.startWaitTime = model.getClock();
         icCall.uToleratedWaitTime = model.rvp.uToleratedWaitTime(icCall.uCustomerType);
         model.udp.CallRegistration(icCall);
-        model.output.numServed++;
+        model.output.numCallProcessedRegular++;
     }
 
 }

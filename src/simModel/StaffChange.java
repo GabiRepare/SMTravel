@@ -21,7 +21,16 @@ class StaffChange extends ScheduledAction {
 
     protected void actionEvent(/*TODO fix this ->double shift*/) {
         //Staff Change action sequence
-        int shift = 0;
-        model.udp.ProcessingStaffChange(Operators.OperatorType.GOLD, shift);
+       if (Operators.OperatorShift.SHIFT_1.getValue() == (int)model.getClock() ||
+           Operators.OperatorShift.SHIFT_2.getValue() == (int)model.getClock() ||
+           Operators.OperatorShift.SHIFT_3.getValue() == (int)model.getClock() ||
+           Operators.OperatorShift.SHIFT_4.getValue() == (int)model.getClock() ||
+           Operators.OperatorShift.SHIFT_5.getValue() == (int)model.getClock())
+       {
+           model.udp.ProcessingStaffChange((int)model.getClock());
+       }
+
+
+
     }
 }

@@ -4,7 +4,7 @@ public class Operators {
 	SMTravel model;
 
 	protected int numFreeOperators;  // Number of free operator
-	protected int addNumOperators;  // Number of operator to add during busy periods, this attribute is a parameter
+	//protected int addNumOperators;  // Number of operator to add during busy periods, this attribute is a parameter
 	protected int[][] operatorQt; //
 
 	enum OperatorType {
@@ -28,10 +28,7 @@ public class Operators {
 		SHIFT_2(60),
 		SHIFT_3(120),
 		SHIFT_4(180),
-		SHIFT_5(240),
-		SHIFT_6(300),
-		SHIFT_7(360),
-		SHIFT_8(400);
+		SHIFT_5(240);
 		private int value;
 
 		 OperatorShift(int value) {
