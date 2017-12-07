@@ -53,8 +53,8 @@ class TalkToOperator extends ConditionalActivity {
     }
 
     protected void secondaryEvent(){
-    	trunkLines.numTrunkLineInUse--;
-    	if(call.uCustomerType.getValue() == Constants.CARDHOLDER) {
+        trunkLines.numTrunkLineInUse--;
+        if(call.uCustomerType.getValue() == Constants.CARDHOLDER) {
             model.output.numCallProcessedCardholder++;
         }
         else

@@ -2,8 +2,8 @@
 package simModel;
 
 class TrunkLines{
-	/*TODO Do we need this?
-	SMTravel model;
+    /*TODO Do we need this?
+    SMTravel model;
     public TrunkLines(SMTravel model) { this.model = model; }
     */
     protected int numTrunkLineInUse; //Number of available trunk lines
