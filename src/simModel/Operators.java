@@ -4,8 +4,7 @@ public class Operators {
 	SMTravel model;
 
 	protected int numFreeOperators;  // Number of free operator
-	//protected int addNumOperators;  // Number of operator to add during busy periods, this attribute is a parameter
-	protected int[][] operatorQt; //
+	protected int[] schedule; //Number of operators coming for every shift (parameter)
 
 	enum OperatorType {
 		GOLD(Constants.GOLD),
@@ -42,5 +41,9 @@ public class Operators {
 
 	OperatorType uOperatorsType;
 	OperatorShift uOperatorsShift;
+
+	public Operators(int[] schedule){
+		this.schedule = schedule;
+	}
 }
 

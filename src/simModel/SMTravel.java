@@ -18,7 +18,7 @@ public class SMTravel extends AOSimulationModel
 	/* Group and Queue Entities */
 	//TODO: make sure it works with TrunkLines class
 	protected double closingTime;
-	protected TrunkLines rgTrunkLines = new TrunkLines(this);
+	protected TrunkLines rgTrunkLines;
 	protected Operators[] rgOperators = new Operators[3];
 	protected ArrayList<Call>[] qWaitLines = new ArrayList[3];
 
@@ -42,9 +42,19 @@ public class SMTravel extends AOSimulationModel
 	// required for experimentation.
 
 	// TODO: Constructor
-	public SMTravel(double t0time, double tftime, /*define other args,*/ Seeds sd)
+	public SMTravel(double t0time, double tftime, int[][] schedule, int numTrunkLine,
+					int numReservedLine, Seeds sd)
 	{
 		// Initialise parameters here
+		qWaitLines[0] = new ArrayList<Call>();
+		qWaitLines[1] = new ArrayList<Call>();
+		qWaitLines[2] = new ArrayList<Call>();
+
+		rgTrunkLines = new TrunkLines(numTrunkLine, numReservedLine);
+
+		rgOperators[Constants.GOLD] = new Operators(schedule[Constants.GOLD]);
+		rgOperators[Constants.SILVER] = new Operators(schedule[Constants.SILVER]);
+		rgOperators[Constants.REGULAR] = new Operators(schedule[Constants.REGULAR]);
 		
 		// Create RVP object with given seed
 		rvp = new RVPs(this,sd);
@@ -62,13 +72,7 @@ public class SMTravel extends AOSimulationModel
 		ArrivalsCardholder arrCardholder = new ArrivalsCardholder(this);
 		scheduleAction(arrCardholder);
 		// Schedule other scheduled actions and acitvities here
-		qWaitLines[0] = new ArrayList<Call>();
-		qWaitLines[1] = new ArrayList<Call>();
-		qWaitLines[2] = new ArrayList<Call>();
 
-		rgOperators[Constants.GOLD] = new Operators();
-		rgOperators[Constants.SILVER] = new Operators();
-		rgOperators[Constants.REGULAR] = new Operators();
 	}
 
 	/************  Implementation of Data Modules***********/	
