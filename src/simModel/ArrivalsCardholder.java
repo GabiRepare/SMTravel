@@ -11,18 +11,16 @@ class ArrivalsCardholder extends ScheduledAction {
 
     @Override
     public double timeSequence() {
-        return (model.rvp.duC());
+        return (model.rvp.duCardholder());
     }
 
     @Override
     protected void actionEvent() {
         // Arrival Action Sequence SCS
-        Call icCall = new Call(model);
-        icCall.uCustomerType = model.rvp.uCardholderType();
-        icCall.uCallType = model.rvp.uCallType();
-        icCall.startWaitTime = model.getClock();
-        icCall.uToleratedWaitTime = model.rvp.uToleratedWaitTime(icCall.uCustomerType);
+        Call icCall = new Call();
+        icCall.uType = model.rvp.uCardholderType();
+        icCall.uSubject = model.rvp.uCallSubject();
+        icCall.uToleratedWaitTime = model.rvp.uToleratedWaitTime(icCall.uType);
         model.udp.CallRegistration(icCall);
-        model.output.numCallProcessedCardholder++;
     }
 }

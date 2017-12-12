@@ -9,7 +9,6 @@ import cern.jet.random.Uniform;
 class RVPs
 {
     SMTravel model; // for accessing the clock
-    protected Call call=new Call(model);
     // Data Models - i.e. random veriate generators for distributions
     // are created using Colt classes, define
     // reference variables here and create the objects in the
@@ -78,7 +77,7 @@ class RVPs
 
 
     protected Exponential interArrDist;  // Customer Inter Arr. Times
-    protected double duC()  // for getting next value of uW(t)
+    protected double duCardholder()  // for getting next value of uW(t)
     {
       double nxtArrival;
       double mean;
@@ -98,7 +97,7 @@ class RVPs
       if(nxtArrival > model.closingTime) nxtArrival = -1.0;  // Ends time sequence
       return(nxtArrival);
     }
-    protected double duR()  // for getting next value of uW(t)
+    protected double duRegular()  // for getting next value of uW(t)
     {
       double nxtRegularArrival;
       double mean;
@@ -128,22 +127,22 @@ class RVPs
 
     MersenneTwister customerTypeRandGen;
     MersenneTwister callTypeRandGen;
-    public Call.CustomerType uCardholderType()
-    {//TO DETERMINE THE GOLD AND SIVER IN THE CUTSTOMER
+    public int uCardholderType()
+    {//TO DETERMINE THE TYPE OF CARDHOLDER
         double randNum = customerTypeRandGen.nextDouble();
-        Call.CustomerType customerType;
-        if(randNum < PROPSIL) customerType = Call.CustomerType.SILVER;
-        else customerType = Call.CustomerType.GOLD;
-        return(customerType);
+        int type;
+        if(randNum < PROPSIL) type = Constants.SILVER;
+        else type = Constants.GOLD;
+        return type;
     }
-    public Call.CallType uCallType()
-    {//TO DETERMINE CALL TYPE;
+    public int uCallSubject()
+    {//TO DETERMINE CALL SUBJECT;
         double randNum = callTypeRandGen.nextDouble();
-        Call.CallType callType;
-        if(randNum < PROPRES) callType = Call.CallType.RESERVATION;
-        else if(randNum < (PROPRES+PROPINFO))callType =  Call.CallType.INFORMATION;
-        else callType =  Call.CallType.CHANGE;
-        return(callType);
+        int callSubject;
+        if(randNum < PROPRES) callSubject = Constants.RESERVATION;
+        else if(randNum < (PROPRES+PROPINFO)) callSubject =  Constants.INFORMATION;
+        else callSubject =  Constants.CHANGE;
+        return callSubject;
     }
     // Min and Max for GOLD service times WITH INFORMATION, RESERVATION, CHANGES
     private final double GIAFMIN = 0.044;
@@ -195,78 +194,72 @@ class RVPs
     private Uniform riSerTM;  // GOLD info service
     private Uniform rrSerTM;  // reservation
     private Uniform rcSerTM; //change
-    public double uServiceTime(Call.CallType callType, Operators.OperatorType operatorType){
-        if(callType.getValue()==Constants.INFORMATION && operatorType.getValue()==Constants.REGULAR ) {
+    public double uServiceTime(int subject, int operatorType){
+        if(subject == Constants.INFORMATION && operatorType == Constants.REGULAR ) {
         return triangularDistribution(1.2, 2.05, 3.75,riSerTM);
         }
-        if(callType.getValue()==Constants.RESERVATION && operatorType.getValue()==Constants.REGULAR ) {
+        if(subject == Constants.RESERVATION && operatorType == Constants.REGULAR ) {
             return triangularDistribution(2.25, 2.95, 8.60,rrSerTM);
         }
-        if(callType.getValue()==Constants.CHANGE && operatorType.getValue()==Constants.REGULAR ) {
+        if(subject == Constants.CHANGE && operatorType == Constants.REGULAR ) {
             return triangularDistribution(1.20, 1.90, 5.80,rcSerTM);
-
         }
-        if(callType.getValue()==Constants.INFORMATION && operatorType.getValue()==Constants.GOLD ) {
+        if(subject == Constants.INFORMATION && operatorType == Constants.GOLD ) {
             return triangularDistribution(1.056, 1.804, 3.3,giSerTM);
         }
-        if(callType.getValue()==Constants.RESERVATION && operatorType.getValue()==Constants.GOLD ) {
+        if(subject == Constants.RESERVATION && operatorType == Constants.GOLD ) {
             return triangularDistribution(1.98, 2.596, 7.568,grSerTM);
         }
-        if(callType.getValue()==Constants.CHANGE && operatorType.getValue()==Constants.GOLD ) {
+        if(subject == Constants.CHANGE && operatorType == Constants.GOLD ) {
             return triangularDistribution(1.056,1.672, 5.104,gcSerTM);
         }
-        if(callType.getValue()==Constants.INFORMATION && operatorType.getValue()==Constants.SILVER ) {
+        if(subject == Constants.INFORMATION && operatorType == Constants.SILVER ) {
             return triangularDistribution(1.14,1.9475, 3.5625,siSerTM);
         }
-        if(callType.getValue()==Constants.RESERVATION && operatorType.getValue()==Constants.SILVER ) {
+        if(subject == Constants.RESERVATION && operatorType == Constants.SILVER ) {
             return triangularDistribution(2.1375,2.8025, 8.17,srSerTM);
         }
-        if(callType.getValue()==Constants.CHANGE && operatorType.getValue()==Constants.SILVER) {
+        if(subject == Constants.CHANGE && operatorType == Constants.SILVER) {
             return triangularDistribution(1.14,1.805, 5.51,scSerTM);
         }
         return 0;
     }
-    public double uAfterCallWorkTime(Operators.OperatorType uOperatorsType, Call.CallType callType) {
+    public double uAfterCallWorkTime(int operatorType, int callType) {
         double afterSrvTm=0;
-        if((uOperatorsType.getValue()==Constants.GOLD) && (callType==Call.CallType.INFORMATION)) {
+        if((operatorType == Constants.GOLD) && (callType == Constants.INFORMATION)) {
             return afterSrvTm = giSrvTm.nextDouble();
         }
-        if((uOperatorsType.getValue()==Constants.GOLD) && (callType==Call.CallType.RESERVATION)) {
+        if((operatorType == Constants.GOLD) && (callType == Constants.RESERVATION)) {
             return afterSrvTm = grSrvTm.nextDouble();
         }
-        if((uOperatorsType.getValue()==Constants.GOLD) && (callType==Call.CallType.CHANGE)){
+        if((operatorType == Constants.GOLD) && (callType == Constants.CHANGE)){
             return afterSrvTm = gcSrvTm.nextDouble();
         }
-        if((uOperatorsType.getValue()==Constants.SILVER) && (callType==Call.CallType.INFORMATION)) {
+        if((operatorType == Constants.SILVER) && (callType == Constants.INFORMATION)) {
             return afterSrvTm = siSrvTm.nextDouble();
         }
-        if((uOperatorsType.getValue()==Constants.SILVER) && (callType==Call.CallType.RESERVATION)) {
+        if((operatorType == Constants.SILVER) && (callType == Constants.RESERVATION)) {
             return afterSrvTm = srSrvTm.nextDouble();
         }
-        if((uOperatorsType.getValue()==Constants.SILVER) && (callType==Call.CallType.CHANGE)){
+        if((operatorType == Constants.SILVER) && (callType == Constants.CHANGE)){
             return afterSrvTm = scSrvTm.nextDouble();}
-        if((uOperatorsType.getValue()==Constants.REGULAR) && (callType==Call.CallType.INFORMATION)) {
+        if((operatorType == Constants.REGULAR) && (callType == Constants.INFORMATION)) {
                 return afterSrvTm = riSrvTm.nextDouble();
             }
-        if((uOperatorsType.getValue()==Constants.REGULAR) && (callType==Call.CallType.RESERVATION)) {
+        if((operatorType == Constants.REGULAR) && (callType == Constants.RESERVATION)) {
                 return afterSrvTm = rrSrvTm.nextDouble();
             }
-        if((uOperatorsType.getValue()==Constants.REGULAR) && (callType==Call.CallType.CHANGE)){
+        if((operatorType == Constants.REGULAR) && (callType == Constants.CHANGE)){
                 return afterSrvTm = rcSrvTm.nextDouble();}
         return afterSrvTm;
 
     }
-    public double uToleratedWaitTime(Call.CustomerType uCustomerType) {
-        if(uCustomerType.getValue()==Constants.GOLD) {
-            return ThreadLocalRandom.current().nextDouble(8,17);
-        }
-        if(uCustomerType.getValue()==Constants.SILVER ) {
-            return ThreadLocalRandom.current().nextDouble(8,17);
-        }
-        if(uCustomerType.getValue()==Constants.REGULAR) {
+    public double uToleratedWaitTime(int type) {
+        if(type == Constants.REGULAR) {
             return ThreadLocalRandom.current().nextDouble(12,30);
+        } else { //CARDHOLDER
+            return ThreadLocalRandom.current().nextDouble(8,17);
         }
-        return 0;
     }
  public double enterCardNumerTime(int minWait, int maxWait) {
 

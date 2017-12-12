@@ -7,10 +7,6 @@ import java.lang.Math;
 
 public class UDPs {
     SMTravel model;  // for accessing the clock
-    protected Call call = new Call(model);
-    protected TrunkLines trunklines = new TrunkLines(model);
-    protected Operators operators = new Operators();
-    protected Output output = new Output(model);
 
     // Constructor
     protected UDPs(SMTravel model) {
@@ -19,30 +15,38 @@ public class UDPs {
 
 
     // Translate User Defined Procedures into methods
-    protected int TrunkLineReadyToAcceptCall(Call.CustomerType customerType, int numTrunkLineInUse) {
-        if (customerType.getValue() == Constants.REGULAR) {
-            return Math.max(trunklines.numTrunkLineInUse - trunklines.numReservedLine, 0);
-        } else
-            return trunklines.numTrunkLine - numTrunkLineInUse;
-
+    protected int TrunkLineReadyToAcceptCall(Call call) {
+        if (call.uType == Constants.REGULAR) {
+            return Math.max(
+                    (model.rgTrunkLines.numTrunkLine
+                            - model.rgTrunkLines.numTrunkLineInUse
+                            - model.rgTrunkLines.numReservedLine),
+                    0);
+        } else //CARDHOLDER
+            return model.rgTrunkLines.numTrunkLine - model.rgTrunkLines.numTrunkLineInUse;
     }
 
     protected void CallRegistration(Call call) {
-        trunklines.numEmptyTrunkLine = TrunkLineReadyToAcceptCall(call.uCustomerType, trunklines.numTrunkLineInUse);
-        if (trunklines.numEmptyTrunkLine > 0 && trunklines.numEmptyTrunkLine > trunklines.numReservedLine) {
-            if (trunklines.numEmptyTrunkLine > trunklines.numReservedLine) {
-                trunklines.numTrunkLineInUse++;
-                model.qWaitLines[call.uCustomerType.getValue()].add(call);
-            }
-        } else if (trunklines.numReservedLine > 0 &&
-                trunklines.numEmptyTrunkLine <= trunklines.numReservedLine) {
-            if (call.uCustomerType.getValue() == Constants.GOLD || call.uCustomerType.getValue() == Constants.SILVER) {
 
-                trunklines.numTrunkLineInUse++;
-                model.qWaitLines[call.uCustomerType.getValue()].add(call);
+        int numAvailableTrunkLine = TrunkLineReadyToAcceptCall(call);
+        if (numAvailableTrunkLine > 0)
+        {
+            model.rgTrunkLines.numTrunkLineInUse++;
+            if (model.rgTrunkLines.numTrunkLineInUse > model.output.maxTrunkLineUsed){
+                model.output.maxTrunkLineUsed = model.rgTrunkLines.numTrunkLineInUse;
             }
-        } else if (trunklines.numEmptyTrunkLine == 0) {
-            if(call.uCustomerType.getValue() == Constants.CARDHOLDER) {
+            call.startWaitTime = model.getClock();
+            model.qWaitLines[call.uType].add(call);
+            model.output.numWait[call.uType]++;
+        } else if (model.rgTrunkLines.numReservedLine > 0 &&
+                numAvailableTrunkLine <= model.rgTrunkLines.numReservedLine) {
+            if (call.uType.getValue() == Constants.GOLD || call.uType.getValue() == Constants.SILVER) {
+
+                model.rgTrunkLines.numTrunkLineInUse++;
+                model.qWaitLines[call.uType.getValue()].add(call);
+            }
+        } else if (numAvailableTrunkLine == 0) {
+            if(call.uType.getValue() == Constants.CARDHOLDER) {
                 model.output.numBusySignalCardholder++;
             }
             else
@@ -82,13 +86,13 @@ public class UDPs {
         operators.numFreeOperators += operators.operatorQt[shift][Constants.REGULAR];
     }
 
-    protected double MaxQualityWaitTime(Call.CustomerType uCustomerType)
+    protected double MaxQualityWaitTime(Call.CustomerType uType)
     {
-        if(uCustomerType.getValue() == Constants.GOLD)
+        if(uType.getValue() == Constants.GOLD)
         {
             return 90/60; // converted to min.
         }
-        else if(uCustomerType.getValue() == Constants.SILVER)
+        else if(uType.getValue() == Constants.SILVER)
         {
             return 180/60;
         }

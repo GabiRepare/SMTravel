@@ -1,5 +1,6 @@
 package simModel;
 
+import com.sun.xml.internal.xsom.impl.Const;
 import simulationModelling.ScheduledAction;
 
 class Initialise extends ScheduledAction
@@ -18,17 +19,22 @@ class Initialise extends ScheduledAction
 
     protected void actionEvent()
     {
-        //TODO need to clear queue line and group
         //System Initialisation
-        model.output.setNumCallProcessedCardholder(0);
-        model.output.setNumCallProcessedRegular(0);
-        model.output.setNumLongWaitGold(0);
-        model.output.setNumLongWaitSilver(0);
-        model.output.setNumLongWaitRegular(0);
-        model.output.setNumBusySignalCarholder(0);
-        model.output.setNumBusySignalRegular(0);
-        model.output.setNumOfArrival(0);
-        model.output.setNumOfArrivalCardholder(0);
+        model.qWaitLines[Constants.GOLD].clear();
+        model.qWaitLines[Constants.SILVER].clear();
+        model.qWaitLines[Constants.REGULAR].clear();
+        model.rgTrunkLines.numTrunkLineInUse = 0;
+        model.rgOperators[Constants.GOLD].numFreeOperators = 0;
+        model.rgOperators[Constants.SILVER].numFreeOperators = 0;
+        model.rgOperators[Constants.REGULAR].numFreeOperators = 0;
+        // Initialise the output variables
+        model.output.numLongWait = new int[3];
+        model.output.numWait = new int[3];
+        model.output.numBusySignalCardholder = 0;
+        model.output.numBusySignalRegular = 0;
+        model.output.numCallReceivedCardholder = 0;
+        model.output.numCallReceivedRegular = 0;
+        model.output.maxTrunkLineUsed = 0;
     }
 
 

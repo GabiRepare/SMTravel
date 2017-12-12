@@ -4,8 +4,6 @@ import simulationModelling.ConditionalActivity;
 
 class TalkToOperator extends ConditionalActivity {
     SMTravel model;
-    //Customer Type is definied in Call.java, double check
-    Call call = new Call(model);
     protected Call.CallType callType;
     protected static Operators.OperatorType operatorType;
     protected Call.CustomerType uCustomerType;
