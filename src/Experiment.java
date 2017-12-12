@@ -24,10 +24,18 @@ class Experiment
        System.out.println(" Case 1");
        for(i=0 ; i < NUMRUNS ; i++)
        {
-          mname = new SMTravel(startTime,endTime,sds[i]);
-          mname.runSimulation();
-          // See examples for hints on collecting output
-          // and developping code for analysis
+           int[][] schedule = {
+                   {3,3,3,3,3}, //GOLD
+                   {4,4,4,4,4}, //SILVER
+                   {10,10,10,10,10} //REGULAR
+           };
+           int numTrunkLine = 50;
+           int numReservedLine = 8;
+           mname = new SMTravel(startTime, endTime, schedule, numTrunkLine,
+                   numReservedLine,sds[i]);
+           mname.runSimulation();
+           // See examples for hints on collecting output
+           // and developping code for analysis
        }
    }
 }
