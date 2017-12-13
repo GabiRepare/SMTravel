@@ -1,8 +1,8 @@
 package simModel;
 
-import java.util.ArrayList;
+import java.util.LinkedList;
+import java.util.Queue;
 
-import com.sun.tools.javac.comp.Enter;
 import simulationModelling.AOSimulationModel;
 import simulationModelling.Behaviour;
 import simulationModelling.SequelActivity;
@@ -16,11 +16,9 @@ public class SMTravel extends AOSimulationModel
         // Define the parameters
     /*-------------Entity Data Structures-------------------*/
     /* Group and Queue Entities */
-    //TODO: make sure it works with TrunkLines class
-    protected double closingTime;
-    protected TrunkLines rgTrunkLines;
-    protected Operators[] rgOperators = new Operators[3];
-    protected ArrayList<Call>[] qWaitLines = new ArrayList[3];
+    TrunkLines rgTrunkLines;
+    Operators[] rgOperators = new Operators[3];
+    Queue[] qWaitLines = new Queue[3];
 
 
     // Define the reference variables to the various
@@ -31,43 +29,39 @@ public class SMTravel extends AOSimulationModel
     // Define any Independent Input Varaibles here
 
     // References to RVP and DVP objects
-    protected RVPs rvp;  // Reference to rvp object - object created in constructor
+    RVPs rvp;  // Reference to rvp object - object created in constructor
     //protected DVPs dvp = new DVPs(this);  // Reference to dvp object
-    protected UDPs udp = new UDPs(this);
-    protected Call icCall=new Call(this);
+    UDPs udp = new UDPs(this);
     // Output object
-    protected Output output = new Output(this);
+    public Output output = new Output();
     //call getters in output you can get any values you want
     // Output values - define the public methods that return values
     // required for experimentation.
 
-    // TODO: Constructor
     public SMTravel(double t0time, double tftime, int[][] schedule, int numTrunkLine,
                     int numReservedLine, Seeds sd)
     {
         // Initialise parameters here
-        qWaitLines[0] = new ArrayList<Call>();
-        qWaitLines[1] = new ArrayList<Call>();
-        qWaitLines[2] = new ArrayList<Call>();
+        qWaitLines[0] = new LinkedList<Call>();
+        qWaitLines[1] = new LinkedList<Call>();
+        qWaitLines[2] = new LinkedList<Call>();
 
         rgTrunkLines = new TrunkLines(numTrunkLine, numReservedLine);
 
-        rgOperators[Constants.GOLD] = new Operators(schedule[Constants.GOLD]);
-        rgOperators[Constants.SILVER] = new Operators(schedule[Constants.SILVER]);
         rgOperators[Constants.REGULAR] = new Operators(schedule[Constants.REGULAR]);
+        rgOperators[Constants.SILVER] = new Operators(schedule[Constants.SILVER]);
+        rgOperators[Constants.GOLD] = new Operators(schedule[Constants.GOLD]);
 
         // Create RVP object with given seed
         rvp = new RVPs(this,sd);
 
-        // rgCounter and qCustLine objects created in Initalise Action
-
         // Initialise the simulation model
         initAOSimulModel(t0time,tftime);
 
-             // Schedule the first arrivals and employee scheduling
+        // Schedule the first arrivals and employee scheduling
         Initialise init = new Initialise(this);
         scheduleAction(init);  // Should always be first one scheduled.
-        Arrivals arr = new Arrivals(this);
+        ArrivalsRegular arr = new ArrivalsRegular(this);
         scheduleAction(arr);
         ArrivalsCardholder arrCardholder = new ArrivalsCardholder(this);
         scheduleAction(arrCardholder);
@@ -82,29 +76,29 @@ public class SMTravel extends AOSimulationModel
     protected void testPreconditions(Behaviour behObj)
     {
         reschedule (behObj);
-        if(EnterCardNumber.precondition(this) == true)
-        {
-            EnterCardNumber enterAccount = new EnterCardNumber(this);
-            enterAccount.startingEvent();
-            scheduleActivity(enterAccount);
-        }
-        else
-        {
-            qWaitLines[Constants.REGULAR].add(icCall);
-        }
-        // Check preconditions of Conditional Activities
-        if (TalkToOperator.precondition(this) == true)
-        {
-            TalkToOperator serviceCall = new TalkToOperator(this);
-            serviceCall.startingEvent();
-            scheduleActivity(serviceCall);
-        }
-        // Check preconditions of Interruptions in Extended Activities
+//        if(EnterCardNumber.precondition(this) == true)
+//        {
+//            EnterCardNumber enterAccount = new EnterCardNumber(this);
+//            enterAccount.startingEvent();
+//            scheduleActivity(enterAccount);
+//        }
+//        else
+//        {
+//            qWaitLines[Constants.REGULAR].add(icCall);
+//        }
+//        // Check preconditions of Conditional Activities
+//        if (TalkToOperator.precondition(this) == true)
+//        {
+//            TalkToOperator serviceCall = new TalkToOperator(this);
+//            serviceCall.startingEvent();
+//            scheduleActivity(serviceCall);
+//        }
+//        // Check preconditions of Interruptions in Extended Activities
     }
 
     public void eventOccured()
     {
-        //this.showSBL();
+        this.showSBL();
         // Can add other debug code to monitor the status of the system
         // See examples for suggestions on setup logging
 
@@ -114,9 +108,21 @@ public class SMTravel extends AOSimulationModel
     }
 
     // Standard Procedure to start Sequel Activities with no parameters
-    protected void spStart(SequelActivity seqAct)
+    void spStart(SequelActivity seqAct)
     {
         seqAct.startingEvent();
         scheduleActivity(seqAct);
+    }
+
+    public double[] getPropLongWait(){
+        return output.getPropLongWait();
+    }
+
+    public double getPropBusySignalCardholder(){
+        return output.getPropBusySignalCardholder();
+    }
+
+    public double getPropBusySignalRegular(){
+        return output.getPropBusySignalRegular();
     }
 }

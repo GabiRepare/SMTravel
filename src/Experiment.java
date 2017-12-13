@@ -36,6 +36,13 @@ class Experiment
            mname.runSimulation();
            // See examples for hints on collecting output
            // and developping code for analysis
+
+           System.out.println("PropLongWait: ["
+                   +mname.getPropLongWait()[0]+", "
+                   +mname.getPropLongWait()[1]+", "
+                   +mname.getPropLongWait()[2]+"]");
+           System.out.println("PropBusyLineSignalRegular: " + mname.getPropBusySignalRegular());
+           System.out.println("PropBusyLineSignalCardholder" + mname.getPropBusySignalRegular());
        }
    }
 }

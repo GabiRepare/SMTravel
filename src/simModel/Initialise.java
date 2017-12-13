@@ -1,6 +1,5 @@
 package simModel;
 
-import com.sun.xml.internal.xsom.impl.Const;
 import simulationModelling.ScheduledAction;
 
 class Initialise extends ScheduledAction
@@ -8,10 +7,10 @@ class Initialise extends ScheduledAction
     SMTravel model;
 
     // Constructor
-    protected Initialise(SMTravel model) { this.model = model; }
+    Initialise(SMTravel model) { this.model = model; }
 
-    double [] ts = { 0.0, -1.0 }; // -1.0 ends scheduling
-    int tsix = 0;  // set index to first entry.
+    private double [] ts = { 0.0, -1.0 }; // -1.0 ends scheduling
+    private int tsix = 0;  // set index to first entry.
     protected double timeSequence()
     {
         return ts[tsix++];  // only invoked at t=0

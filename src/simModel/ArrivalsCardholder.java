@@ -5,7 +5,7 @@ import simulationModelling.ScheduledAction;
 class ArrivalsCardholder extends ScheduledAction {
     SMTravel model; // To access the complete model
 
-    public ArrivalsCardholder(SMTravel model) {
+    ArrivalsCardholder(SMTravel model) {
         this.model = model;
     }
 
@@ -21,6 +21,8 @@ class ArrivalsCardholder extends ScheduledAction {
         icCall.uType = model.rvp.uCardholderType();
         icCall.uSubject = model.rvp.uCallSubject();
         icCall.uToleratedWaitTime = model.rvp.uToleratedWaitTime(icCall.uType);
-        model.udp.CallRegistration(icCall);
+        model.output.numCallReceivedCardholder++;
+        EnterCardNumber cardAct = new EnterCardNumber(model, icCall);
+        model.spStart(cardAct);
     }
 }

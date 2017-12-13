@@ -3,28 +3,29 @@ package simModel;
 import simulationModelling.SequelActivity;
 
 public class AfterCallWorkTime extends SequelActivity{
-    Operators operators;
-    Call call;
     SMTravel model;
-    public AfterCallWorkTime(Operators operators, Call call, SMTravel model)
+    private int operatorType;
+    private Call call;
+
+    AfterCallWorkTime(SMTravel model, int operatorType, Call call)
     {
-        this.operators = operators;
-        this.call = call;
         this.model = model;
+        this.operatorType = operatorType;
+        this.call = call;
     }
     @Override
     public void startingEvent() {
-
+        //Nothing to do
     }
 
     @Override
     protected double duration() {
-
-        return model.rvp.uAfterCallWorkTime(operators.uOperatorsType, call.uCallType);
+        return model.rvp.uAfterCallWorkTime(call.uSubject);
     }
 
     @Override
     protected void terminatingEvent() {
-        operators.numFreeOperators++;
+        model.rgOperators[operatorType].numFreeOperators++;
+        model.udp.TryMatchCallOperator();
     }
 }

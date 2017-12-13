@@ -6,7 +6,7 @@ class ArrivalsRegular extends ScheduledAction
 {
     SMTravel model; // To access the complete model
 
-    public ArrivalsRegular(SMTravel model) { this.model = model; }
+    ArrivalsRegular(SMTravel model) { this.model = model; }
 
     @Override
     public double timeSequence()
@@ -21,6 +21,7 @@ class ArrivalsRegular extends ScheduledAction
         icCall.uType = Constants.REGULAR;
         icCall.uSubject = model.rvp.uCallSubject();
         icCall.uToleratedWaitTime = model.rvp.uToleratedWaitTime(Constants.REGULAR);
+        model.output.numCallReceivedRegular++;
         model.udp.CallRegistration(icCall);
     }
 

@@ -2,9 +2,6 @@ package simModel;
 
 class Output
 {
-    SMTravel model;
-
-    protected Output(SMTravel md) { model = md; }
     // Use OutputSequence class to define Trajectory and Sample Sequences
     // Trajectory Sequences
 
@@ -13,13 +10,13 @@ class Output
     // DSOVs available in the OutputSequence objects
     // If seperate methods required to process Trajectory or Sample
     // Sequences - add them here
-    protected int[] numLongWait = new int[3];
-    protected int[] numWait = new int[3];
-    protected int numBusySignalCardholder;
-    protected int numBusySignalRegular;
-    protected int numCallReceivedCardholder;
-    protected int numCallReceivedRegular;
-    protected int maxTrunkLineUsed;
+    int[] numLongWait = new int[3];
+    int[] numWait = new int[3];
+    int numBusySignalCardholder;
+    int numBusySignalRegular;
+    int numCallReceivedCardholder;
+    int numCallReceivedRegular;
+    int maxTrunkLineUsed;
 
     public double[] getPropLongWait(){
         double[] propLongWait = new double[3];
