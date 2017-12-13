@@ -21,6 +21,8 @@ class ArrivalsRegular extends ScheduledAction
         icCall.uType = Constants.REGULAR;
         icCall.uSubject = model.rvp.uCallSubject();
         icCall.uToleratedWaitTime = model.rvp.uToleratedWaitTime(Constants.REGULAR);
+        CallHangUp hgUp = new CallHangUp(model, icCall);
+        model.scheduleAction(hgUp);
         model.output.numCallReceivedRegular++;
         model.udp.CallRegistration(icCall);
     }

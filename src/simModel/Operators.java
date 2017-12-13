@@ -8,5 +8,10 @@ class Operators {
     Operators(int[] schedule){
         this.schedule = schedule;
     }
+
+    @Override
+    public String toString() {
+        return ("Operators: numFreeOperator = " + numFreeOperators);
+    }
 }
 

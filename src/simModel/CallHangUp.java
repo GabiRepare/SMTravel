@@ -16,15 +16,18 @@ class CallHangUp extends ScheduledAction{
     public double timeSequence(){
         if (firstTime){
             firstTime = false;
-            return model.getClock() + model.rvp.uToleratedWaitTime(call.uType);
+            return model.getClock() + call.uToleratedWaitTime;
         } else {return -1.0;}
     }
 
     public void actionEvent()
     {
-        //Call Hangup action sequence
-        model.udp.CheckForLongWait(call);
-        model.qWaitLines[call.uType].remove(call);
+        if (model.qWaitLines[call.uType].contains(call)) {
+            //Call Hangup action sequence
+            model.udp.CheckForLongWait(call);
+            model.qWaitLines[call.uType].remove(call);
+            model.rgTrunkLines.numTrunkLineInUse--;
+        }
     }
 
 }

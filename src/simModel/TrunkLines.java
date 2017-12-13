@@ -11,4 +11,9 @@ class TrunkLines{
         this.numReservedLine = numReservedLine;
         numTrunkLineInUse = 0;
     }
+
+    @Override
+    public String toString() {
+        return ("TrunkLines: numTrunkLineInUse = " + numTrunkLineInUse);
+    }
 }

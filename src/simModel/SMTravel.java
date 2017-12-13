@@ -33,7 +33,7 @@ public class SMTravel extends AOSimulationModel
     //protected DVPs dvp = new DVPs(this);  // Reference to dvp object
     UDPs udp = new UDPs(this);
     // Output object
-    public Output output = new Output();
+    Output output = new Output();
     //call getters in output you can get any values you want
     // Output values - define the public methods that return values
     // required for experimentation.
@@ -61,8 +61,10 @@ public class SMTravel extends AOSimulationModel
         // Schedule the first arrivals and employee scheduling
         Initialise init = new Initialise(this);
         scheduleAction(init);  // Should always be first one scheduled.
-        ArrivalsRegular arr = new ArrivalsRegular(this);
-        scheduleAction(arr);
+        StaffChange change = new StaffChange(this);
+        scheduleAction(change);
+        ArrivalsRegular arrRegular = new ArrivalsRegular(this);
+        scheduleAction(arrRegular);
         ArrivalsCardholder arrCardholder = new ArrivalsCardholder(this);
         scheduleAction(arrCardholder);
         // Schedule other scheduled actions and acitvities here
@@ -98,7 +100,7 @@ public class SMTravel extends AOSimulationModel
 
     public void eventOccured()
     {
-        this.showSBL();
+        //this.showSBL();
         // Can add other debug code to monitor the status of the system
         // See examples for suggestions on setup logging
 

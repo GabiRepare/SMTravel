@@ -12,6 +12,8 @@ class Constants
     final static int INFORMATION = 0;
     final static int RESERVATION = 1;
     final static int CHANGE = 2;
+    final static String[] CALL_TYPES = {"REGULAR", "SILVER", "GOLD"};
+    final static String[] CALL_SUBJECTS = {"INFORMATION", "RESERVATION", "CHANGE"};
 
     final static double[] LONG_WAIT_THRESHOLD = {
             15,  //REGULAR

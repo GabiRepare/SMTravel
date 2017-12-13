@@ -22,6 +22,8 @@ class ArrivalsCardholder extends ScheduledAction {
         icCall.uSubject = model.rvp.uCallSubject();
         icCall.uToleratedWaitTime = model.rvp.uToleratedWaitTime(icCall.uType);
         model.output.numCallReceivedCardholder++;
+        CallHangUp hgUp = new CallHangUp(model, icCall);
+        model.scheduleAction(hgUp);
         EnterCardNumber cardAct = new EnterCardNumber(model, icCall);
         model.spStart(cardAct);
     }

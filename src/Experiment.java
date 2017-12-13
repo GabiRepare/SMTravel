@@ -25,9 +25,9 @@ class Experiment
        for(i=0 ; i < NUMRUNS ; i++)
        {
            int[][] schedule = {
-                   {3,3,3,3,3}, //GOLD
-                   {4,4,4,4,4}, //SILVER
-                   {10,10,10,10,10} //REGULAR
+                   {5,5,5,5,5}, //REGULAR
+                   {2,2,2,2,2}, //SILVER
+                   {1,1,1,1,1}  //GOLD
            };
            int numTrunkLine = 50;
            int numReservedLine = 8;
@@ -37,12 +37,12 @@ class Experiment
            // See examples for hints on collecting output
            // and developping code for analysis
 
-           System.out.println("PropLongWait: ["
-                   +mname.getPropLongWait()[0]+", "
-                   +mname.getPropLongWait()[1]+", "
-                   +mname.getPropLongWait()[2]+"]");
-           System.out.println("PropBusyLineSignalRegular: " + mname.getPropBusySignalRegular());
-           System.out.println("PropBusyLineSignalCardholder" + mname.getPropBusySignalRegular());
+           System.out.println("PropLongWait:");
+           System.out.println("    REGULAR: " + mname.getPropLongWait()[0]);
+           System.out.println("    SILVER:  " + mname.getPropLongWait()[1]);
+           System.out.println("    GOLD:    " + mname.getPropLongWait()[2]);
+           System.out.println("PropBusyLineSignalRegular:    " + mname.getPropBusySignalRegular());
+           System.out.println("PropBusyLineSignalCardholder: " + mname.getPropBusySignalRegular());
        }
    }
 }

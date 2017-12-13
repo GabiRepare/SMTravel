@@ -31,9 +31,9 @@ class RVPs
         dmCallRegularInterArrivals = new Exponential[12];
         dmCallCardholderInterArrivals = new Exponential[12];
         for (int i = 0; i < 12; i++){
-            dmCallRegularInterArrivals[i] = new Exponential(1.0/Constants.REGULAR_ARRIVAL_RATE[i],
+            dmCallRegularInterArrivals[i] = new Exponential(Constants.REGULAR_ARRIVAL_RATE[i],
                     new MersenneTwister(sd.arrRegular[i]));
-            dmCallCardholderInterArrivals[i] = new Exponential(1.0/Constants.CARDHOLDER_ARRIVAL_RATE[i],
+            dmCallCardholderInterArrivals[i] = new Exponential(Constants.CARDHOLDER_ARRIVAL_RATE[i],
                     new MersenneTwister(sd.arrCardholder[i]));
         }
         dmCardholderType = new MersenneTwister(sd.cardholderType);
