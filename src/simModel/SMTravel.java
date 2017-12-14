@@ -127,4 +127,6 @@ public class SMTravel extends AOSimulationModel
     public double getPropBusySignalRegular(){
         return output.getPropBusySignalRegular();
     }
+
+    public int getMaxTrunkLineUsed() { return output.maxTrunkLineUsed;}
 }

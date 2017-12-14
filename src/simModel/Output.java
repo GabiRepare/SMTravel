@@ -18,7 +18,7 @@ class Output
     int numCallReceivedRegular;
     int maxTrunkLineUsed;
 
-    public double[] getPropLongWait(){
+    double[] getPropLongWait(){
         double[] propLongWait = new double[3];
         for (int i = 0; i < 3; i++){
             propLongWait[i] = (double)numLongWait[i]/numWait[i];
@@ -26,11 +26,11 @@ class Output
         return propLongWait;
     }
 
-    public double getPropBusySignalCardholder(){
+    double getPropBusySignalCardholder(){
         return (double)numBusySignalCardholder / numCallReceivedCardholder;
     }
 
-    public double getPropBusySignalRegular(){
+    double getPropBusySignalRegular(){
         return (double)numBusySignalRegular / numCallReceivedRegular;
     }
 }
