@@ -1,57 +1,32 @@
 package simModel;
 
-import simulationModelling.ConditionalActivity;
+import simulationModelling.SequelActivity;
 
-class TalkToOperator extends ConditionalActivity {
+class TalkToOperator extends SequelActivity {
     SMTravel model;
-    //Customer Type is definied in Call.java, double check
+    private Call call;
+    private int callType;
+    private int operatorType;
 
-    protected Call.CallType callType;
-    protected  Operators.OperatorType operatorType;
-
-    protected Call.CustomerType uCustomerType;
-
-    public TalkToOperator(SMTravel model) { this.model = model; }
-
-    protected static boolean precondition(SMTravel simModel){
-        if(call.uCostmerType == Constant.GOLD)
-        {
-            if(simModel.Operator[Constants.GOLD].numFreeOperator>0 ||
-                    simModel.Operator[Constants.SILVER].numFreeOperator>0 ||
-                    simModel.Operator[Constants.REGULAR].numFreeOperator>0)
-            {
-                return true;
-            }
-        }
-        else if (call.uCostmerType == Constant.SILVER || Constant.REGULAR)
-        {
-            if(simModel.Operator[Constants.SILVER].numFreeOperator>0 ||
-               simModel.Operator[Constants.REGULAR].numFreeOperator>0
-            {
-                return true;
-            }
-        }
-        return false;
+    TalkToOperator(SMTravel model, int callType, int operatorType) {
+        this.model = model;
+        this.callType = callType;
+        this.operatorType = operatorType;
     }
 
     public void startingEvent(){
-        model.udp.processTalkToOperator(operatorType);
+        call = (Call)model.qWaitLines[callType].poll();
+        model.udp.CheckForLongWait(call);
+        model.rgOperators[operatorType].numFreeOperators--;
     }
 
     protected double duration(){
-        return (model.rvp.uServiceTime(callType,operatorType));
-    }
-
-    protected void secondaryEvent(){
-        numTrunkLineInUse--;
-        ssov.numServed++;
-    }
-
-    protected double secondaryDuration(){
-        return (model.rvp.uAfterCallWorkTime(uCustomerType));
+        return (model.rvp.uServiceTime(call.uSubject,operatorType));
     }
 
     protected void terminatingEvent(){
-        simModel.rgOperator.numFreeOperators++;
+        model.rgTrunkLines.numTrunkLineInUse--;
+        AfterCallWorkTime afterCallWork = new AfterCallWorkTime(model, operatorType, call);
+        model.spStart(afterCallWork);
     }
 }

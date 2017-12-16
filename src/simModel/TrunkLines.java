@@ -1,9 +1,18 @@
 package simModel;
 
 class TrunkLines{
-    protected int numTrunkLineInUse; //Number of available trunk lines
-    protected int numReservedLine; //Number of reserved trunk lines
-    protected int numTrunkLine; //Total number of trunk lines
+    int numTrunkLineInUse; //Number of available trunk lines
+    int numReservedLine; //Number of reserved trunk lines
+    int numTrunkLine; //Total number of trunk lines
 
-    //TODO: Any methods needed?
+    TrunkLines(int numTrunkLine, int numReservedLine){
+        this.numTrunkLine = numTrunkLine;
+        this.numReservedLine = numReservedLine;
+        numTrunkLineInUse = 0;
+    }
+
+    @Override
+    public String toString() {
+        return ("TrunkLines: numTrunkLineInUse = " + numTrunkLineInUse);
+    }
 }
