@@ -6,14 +6,14 @@ import outputAnalysis.ConfidenceInterval;
 // 
 class Experiment
 {
-    private static final int NUMRUNS = 30;
+    private static final int NUMRUNS = 20;
     private static final double CONF_LEVEL = 0.95;
 
     public static void main(String[] args)
     {
 
         double startTime=0.0, endTime=720.0;
-        Seeds[] sds = new Seeds[NUMRUNS];
+        DistributionData[] distData = new DistributionData[NUMRUNS];
         SMTravel mname;  // Simulation object
 
         //Output storage variables
@@ -25,9 +25,9 @@ class Experiment
         double[] maxTrunkLineUsed;
 
 
-        // Lets get a set of uncorrelated seeds
+        // Lets get a set of uncorrelated distribution data
         RandomSeedGenerator rsg = new RandomSeedGenerator();
-        for(int i=0 ; i<NUMRUNS ; i++) sds[i] = new Seeds(rsg);
+        for(int i=0 ; i<NUMRUNS ; i++) distData[i] = new DistributionData(rsg);
 
         //Initialize output variables
         propLongWaitRegular = new double[NUMRUNS];
@@ -40,27 +40,32 @@ class Experiment
         // Loop for NUMRUN simulation runs for each case
         // Case 1
         System.out.println(" Experiment 1");
-        for(int i=0 ; i < NUMRUNS ; i++)
-        {
-            int[][] schedule = {
-                    {6,6,6,6,6}, //REGULAR
-                    {3,3,3,3,3}, //SILVER
-                    {2,2,2,2,2}  //GOLD
-            };
-            int numTrunkLine = 60;
-            int numReservedLine = 4;
-            mname = new SMTravel(startTime, endTime, schedule, numTrunkLine,
-                    numReservedLine,sds[i]);
-            mname.runSimulation();
+        System.out.println(System.currentTimeMillis());
 
-            //Collect output
-            propLongWaitRegular[i] = mname.getPropLongWait()[0];
-            propLongWaitSilver[i] = mname.getPropLongWait()[1];
-            propLongWaitGold[i] = mname.getPropLongWait()[2];
-            propBusySignalRegular[i] = mname.getPropBusySignalRegular();
-            propBusySignalCardholder[i] = mname.getPropBusySignalCardholder();
-            maxTrunkLineUsed[i] = (double)mname.getMaxTrunkLineUsed();
+        for (int k = 0; k < 1000; k++) {
+            for (int i = 0; i < NUMRUNS; i++) {
+                int[][] schedule = {
+                        {6, 6, 6, 6, 6}, //REGULAR
+                        {3, 3, 3, 3, 3}, //SILVER
+                        {2, 2, 2, 2, 2}  //GOLD
+                };
+                int numTrunkLine = 60;
+                int numReservedLine = 4;
+                mname = new SMTravel(startTime, endTime, schedule, numTrunkLine,
+                        numReservedLine, distData[i]);
+                mname.runSimulation();
+
+                //Collect output
+                propLongWaitRegular[i] = mname.getPropLongWait()[0];
+                propLongWaitSilver[i] = mname.getPropLongWait()[1];
+                propLongWaitGold[i] = mname.getPropLongWait()[2];
+                propBusySignalRegular[i] = mname.getPropBusySignalRegular();
+                propBusySignalCardholder[i] = mname.getPropBusySignalCardholder();
+                maxTrunkLineUsed[i] = (double) mname.getMaxTrunkLineUsed();
+            }
         }
+        System.out.println(System.currentTimeMillis());
+
 
         //Do the stats
         ConfidenceInterval ciPropLongWaitRegular = new ConfidenceInterval(propLongWaitRegular, CONF_LEVEL);

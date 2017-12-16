@@ -39,7 +39,7 @@ public class SMTravel extends AOSimulationModel
     // required for experimentation.
 
     public SMTravel(double t0time, double tftime, int[][] schedule, int numTrunkLine,
-                    int numReservedLine, Seeds sd)
+                    int numReservedLine, DistributionData distData)
     {
         // Initialise parameters here
         qWaitLines[0] = new LinkedList<Call>();
@@ -53,7 +53,10 @@ public class SMTravel extends AOSimulationModel
         rgOperators[Constants.GOLD] = new Operators(schedule[Constants.GOLD]);
 
         // Create RVP object with given seed
-        rvp = new RVPs(this,sd);
+        rvp = new RVPs(this,distData);
+
+        //Initialise the iterators for the the distribution data
+        distData.initialiseIterators();
 
         // Initialise the simulation model
         initAOSimulModel(t0time,tftime);
