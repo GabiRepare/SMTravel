@@ -1,139 +1,104 @@
 package simModel;
 
-import simModel.Call.CustomerType;
-import simModel.Operators.OperatorShift;
-
 import java.lang.Math;
 
-public class UDPs
-{
-	SMTravel model;  // for accessing the clock
-    protected Call call = new Call(model);
-    protected TrunkLines trunklines =new TrunkLines(model);
-    protected Operators operators =new Operators(model);
-    protected Output output =new Output(model);
-	// Constructor
-	protected UDPs(SMTravel model) { this.model = model; }
-	
+class UDPs {
+    SMTravel model;  // //access to model:SMTravel and accessing the clock
 
-
-	// Translate User Defined Procedures into methods
-  	protected int TrunkLineReadyToAcceptCall(Call.CustomerType customerType, int numTrunkLineInUse)
-    {
-        if (customerType.getValue() == Constants.REGULAR)
-        {
-        	return Math.max(trunklines.numTrunkLineInUse - trunklines.numReservedLine, 0);}
-        else  
-        return trunklines.numTrunkLine - numTrunkLineInUse;
-        
-    }
-    protected void CallRegistration(Call call)
-    {
-    	trunklines.numEmptyTrunkLine = TrunkLineReadyToAcceptCall(call.uCustomerType, trunklines.numTrunkLineInUse);
-        if(trunklines.numEmptyTrunkLine>0 &&trunklines.numEmptyTrunkLine > trunklines.numReservedLine)
-        {
-            if(trunklines.numEmptyTrunkLine > trunklines.numReservedLine)
-            {
-                trunklines.numTrunkLineInUse++;
-                model.qWaitLines[call.uCustomerType.getValue()].add(call);
-            }
-        }
-        else if(trunklines.numReservedLine> 0 &&
-       trunklines.numEmptyTrunkLine <= trunklines.numReservedLine)
-        {
-            if(call.uCustomerType.getValue() == Constants.GOLD||call.uCustomerType.getValue() == Constants.SILVER)
-            {
-
-                trunklines.numTrunkLineInUse++;
-                model.qWaitLines[call.uCustomerType.getValue()].add(call);
-            }
-        }
-        else if(trunklines.numEmptyTrunkLine == 0)
-        {
-            output.numBusySignal++;
-        }
-        else
-        {
-           trunklines.numEmptyTrunkLine = trunklines.numTrunkLine - trunklines.numTrunkLineInUse;
+    // Constructor
+    UDPs(SMTravel model) {
+        this.model = model;
     }
 
-    }
-    protected void CallRegistration(Call.CustomerType uCustomerType)
-    {
-    	trunklines.numEmptyTrunkLine =   TrunkLineReadyToAcceptCall(uCustomerType, trunklines.numTrunkLineInUse);
-        if(trunklines.numEmptyTrunkLine>0 &&trunklines.numEmptyTrunkLine > trunklines.numReservedLine)
-        {
-            if(trunklines.numEmptyTrunkLine > trunklines.numReservedLine)
-            {
-                trunklines.numTrunkLineInUse++;
-                model.qWaitLines[uCustomerType.getValue()].add(call);
-            }
-        }
-        else if(trunklines.numReservedLine> 0 &&
-       trunklines.numEmptyTrunkLine <= trunklines.numReservedLine)
-        {
-            if(uCustomerType.getValue()==Constants.GOLD ||uCustomerType.getValue()==Constants.SILVER)
-            {
 
-                trunklines.numTrunkLineInUse++;
-                model.qWaitLines[call.uCustomerType.getValue()].add(call);
-            }
-        }
-        else if(trunklines.numEmptyTrunkLine == 0)
+    // Translate User Defined Procedures into methods
+    private int TrunkLineReadyToAcceptCall(Call call) {
+        if (call.uType == Constants.REGULAR) {
+            return Math.max(
+                    (model.rgTrunkLines.numTrunkLine
+                            - model.rgTrunkLines.numTrunkLineInUse
+                            - model.rgTrunkLines.numReservedLine),
+                    0);
+        } else //CARDHOLDER
+            return model.rgTrunkLines.numTrunkLine - model.rgTrunkLines.numTrunkLineInUse;
+    }
+    //Connects the call into a trunk line and place the caller to the right queue depend on its type
+    //in case the Trunk has available lines a call will register the call information and place the caller in the queue of his type. 
+    void CallRegistration(Call call) {
+        int numAvailableTrunkLine = TrunkLineReadyToAcceptCall(call);
+        if (numAvailableTrunkLine > 0)
         {
-            output.numBusySignal++;
+            model.rgTrunkLines.numTrunkLineInUse++;
+            if (model.rgTrunkLines.numTrunkLineInUse > model.output.maxTrunkLineUsed){
+                model.output.maxTrunkLineUsed = model.rgTrunkLines.numTrunkLineInUse;
+            }
+            call.startWaitTime = model.getClock();
+            model.qWaitLines[call.uType].add(call);
+            model.output.numWait[call.uType]++;
+            TryMatchCallOperator();
+        } else {
+            //In case the Trunk is full the call will receive a busy signal
+            if (call.uType == Constants.REGULAR) {
+                model.output.numBusySignalRegular++;
+            } else { //CARDHOLDER
+                model.output.numBusySignalCardholder++;
+            }
         }
     }
-
-    protected void processTalkToOperator(Operators.OperatorType operatorType)
-    {
-        if( operatorType.getValue()==Constants.GOLD ) {
-            if (model.qWaitLines[Constants.GOLD].size() > 0)
-            {
-                model.qWaitLines[Constants.GOLD].remove(model.qWaitLines[Constants.GOLD].size() -1);
+    
+    //insert or remove operators according to the staff schedule at the current time.
+    void ProcessingStaffChange() {
+        for (int i = 0; i < 9; i++){
+            if (model.getClock() == Constants.STAFF_CHANGE_TIME_SEQ[i]){
+                int shift = i % 5;
+                if (i < 5) { //Shift beginning
+                    for (int opType = 0; opType < 3; opType++){
+                        model.rgOperators[opType].numFreeOperators += model.rgOperators[opType].schedule[shift];
+                        TryMatchCallOperator();
+                    }
+                } else { //Shift ending
+                    for (int opType = 0; opType < 3; opType++){
+                        model.rgOperators[opType].numFreeOperators -= model.rgOperators[opType].schedule[shift];
+                    }
+                }
             }
         }
-        else if( operatorType.getValue() == Constants.SILVER )
-        {
-            if (model.qWaitLines[Constants.GOLD].size() > 0)
-            {
-                model.qWaitLines[Constants.GOLD].remove(model.qWaitLines[Constants.GOLD].size() -1);
-            }
-            else if(model.qWaitLines[Constants.SILVER].size() > 0)
-            {
-                model.qWaitLines[Constants.SILVER].remove(model.qWaitLines[Constants.SILVER].size() -1);
-            }
-        }
-        else
-        {
-            if (model.qWaitLines[Constants.GOLD].size() > 0)
-            {
-                model.qWaitLines[Constants.GOLD].remove(model.qWaitLines[Constants.GOLD].size() -1);
-            }
-            else if(model.qWaitLines[Constants.SILVER].size() > 0)
-            {
-                model.qWaitLines[Constants.SILVER].remove(model.qWaitLines[Constants.SILVER].size() -1);
-            }
-            else if(model.qWaitLines[Constants.REGULAR].size() > 0)
-            {
-                model.qWaitLines[Constants.REGULAR].remove(model.qWaitLines[Constants.REGULAR].size() -1);
-            }
-        }
-
     }
-    protected void ProcessingStaffChange(Operators.OperatorType uOperatorsType,int shift)
-    {	
-        if(uOperatorsType.getValue() == Constants.GOLD)
-        {
-        	operators.numFreeOperators += operators.operatorQt[shift][Constants.GOLD];
+    //Check if the call wait time has exceeded the quality threshold. If so, it increases the long wait counter. 
+    void CheckForLongWait(Call call) {
+        if (model.getClock() - call.startWaitTime > Constants.LONG_WAIT_THRESHOLD[call.uType]){
+            model.output.numLongWait[call.uType]++;
         }
-        if(uOperatorsType.getValue() == Constants.SILVER)
-        {
-        	operators.numFreeOperators += operators.operatorQt[shift][Constants.SILVER];
+    }
+    
+    //checks if there are calls that can be dispatched to a free operator. 
+    //If one found, a TalkToOperator activity is scheduled.
+    void TryMatchCallOperator() {
+        int callType = -1;
+        int operatorType = -1;
+
+        for (int opType = 2; opType >= 0; opType--) { //Prioritize GOLD operators
+            if(model.rgOperators[opType].numFreeOperators > 0) {
+                if (!model.qWaitLines[Constants.GOLD].isEmpty()){
+                    callType = Constants.GOLD;
+                    operatorType = opType;
+                    break;
+                } else if ((opType == Constants.REGULAR || opType == Constants.SILVER)
+                        && !model.qWaitLines[Constants.SILVER].isEmpty()) {
+                    callType = Constants.SILVER;
+                    operatorType = opType;
+                    break;
+                } else if (opType == Constants.REGULAR
+                        && !model.qWaitLines[Constants.REGULAR].isEmpty()) {
+                    callType = Constants.REGULAR;
+                    operatorType = opType;
+                    break;
+                }
+            }
         }
-        if(uOperatorsType.getValue() == Constants.REGULAR)
-        {
-        	operators.numFreeOperators += operators.operatorQt[shift][Constants.REGULAR];
+        if (callType != -1) {
+            TalkToOperator talkOp = new TalkToOperator(model, callType, operatorType);
+            model.spStart(talkOp);
         }
     }
 }

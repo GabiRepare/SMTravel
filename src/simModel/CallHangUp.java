@@ -4,19 +4,32 @@ import simulationModelling.ScheduledAction;
 
 class CallHangUp extends ScheduledAction{
 
-    :wsimModel model; //reference to model object
-    CallHangUp(simModel caller){ this.model = model; }
+    SMTravel model; //access to model:SMTravel
+    private Call call;
+    private boolean firstTime;
 
-    public double timeSequence(){
-        //needs other classes
+    
+    CallHangUp(SMTravel model, Call call){
+        this.model = model;
+        this.call = call;
+        firstTime = true;
     }
-
-    public void actionEvent(/*TODO doesnt want parameter->Call uCallType*/ ){
-
-        //Call Hangup action sequence
-
-        //needs to be fixed based on other classes
-        model.qWaitLine.remove(uCallType);
+    //time sequence of call hang up action
+    public double timeSequence(){
+        if (firstTime){
+            firstTime = false;
+            return model.getClock() + call.uToleratedWaitTime;
+        } else {return -1.0;}
+    }
+    //call hang up action event sequence
+    public void actionEvent()
+    {
+        if (model.qWaitLines[call.uType].contains(call)) {
+          
+            model.udp.CheckForLongWait(call);
+            model.qWaitLines[call.uType].remove(call);
+            model.rgTrunkLines.numTrunkLineInUse--;
+        }
     }
 
 }
