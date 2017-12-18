@@ -3,6 +3,7 @@ package simModel;
 import simulationModelling.ScheduledAction;
 
 class CallHangUp extends ScheduledAction{
+    //hang up operation for call
 
     SMTravel model; //reference to model object
     private Call call;
