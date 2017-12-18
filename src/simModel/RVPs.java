@@ -19,20 +19,22 @@ class RVPs
         this.distData = distData;
     }
 
-
+    //next arrival of cardholder 
     double duCardholder()
     {
+        
         int time = (int)model.getClock() / 60;
         return model.getClock() + distData.itCallCardholderInterArrivals[time].next();
     }
 
-
+    //next arrival of regular customer 
     double duRegular()
     {
         int time = (int) model.getClock() / 60;
         return model.getClock() + distData.itCallRegularInterArrivals[time].next();
     }
 
+    
     int uCardholderType() {
         double randNum = distData.itCardholderType.next();
         int type;
@@ -43,7 +45,7 @@ class RVPs
         }
         return type;
     }
-
+    //get service time according to the operator type
     double uServiceTime(int subject, int operatorType){
         double serviceTime = distData.itServiceTime[subject].next();
         if (operatorType == Constants.SILVER){
@@ -53,11 +55,11 @@ class RVPs
         }
         return serviceTime;
     }
-
+    //get after call-work time corresponding to call type
     double uAfterCallWorkTime(int callType) {
         return distData.itAfterCallTime[callType].next();
     }
-
+    //get utolerated wait time corresponding to call type
     double uToleratedWaitTime(int callType) {
         if(callType == Constants.REGULAR) {
             return distData.itToleratedWaitTime[Constants.REGULAR].next();
@@ -65,11 +67,11 @@ class RVPs
             return distData.itToleratedWaitTime[Constants.CARDHOLDER].next();
         }
     }
-
+    
     double cardNumberTypingTime() {
         return distData.itTypingTime.next();
     }
-
+    //get random call type from proportion of INFORMATION, RESERVATION AND CHANGES
     int uCallSubject()
     {
         double randNum = distData.itCallSubject.next();
