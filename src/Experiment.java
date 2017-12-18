@@ -6,7 +6,7 @@ import outputAnalysis.ConfidenceInterval;
 // 
 class Experiment
 {
-    private static final int NUMRUNS = 30;
+    private static final int NUMRUNS = 20;
     private static final double CONF_LEVEL = 0.95;
 
     public static void main(String[] args)
