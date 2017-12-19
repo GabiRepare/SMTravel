@@ -272,7 +272,7 @@ class RunnableAgent implements Runnable {
     }
 
     private boolean getPassFail(ConfidenceInterval ci, double maxAcceptedValue) {
-        return (ci.getCfMax() < maxAcceptedValue);
+        return (ci.getCfMax() <= maxAcceptedValue);
     }
 }
 
