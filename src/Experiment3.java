@@ -63,7 +63,6 @@ class BruteForceState2 {
     BigInteger m;
     int[][] scheduleRange;
     Parameter bestParameter;
-    int bestParameterOccurence;
     long lastLog;
     Boolean newBestParameterFound;
     BigInteger n;
@@ -82,7 +81,6 @@ class BruteForceState2 {
         this.rand = randGen;
         this.scheduleRange = scheduleRange;
         bestParameter = Parameter.MAX_VALUE();
-        bestParameterOccurence = 0;
         lastLog = 0;
         newBestParameterFound = false;
         n = BigInteger.valueOf(0);
@@ -179,9 +177,10 @@ class RunnableAgent2 implements Runnable {
                 if (param.getCost() < state.bestParameter.getCost()) {
                     state.newBestParameterFound = true;
                     state.bestParameter = param;
-                    state.bestParameterOccurence = 0;
-                } else if (state.bestParameter.equals(param)) {
-                    state.bestParameterOccurence++;
+                } else if (param.getCost() == state.bestParameter.getCost() &&
+                        !state.bestParameter.equals(param)) {
+                    state.newBestParameterFound = true;
+                    state.bestParameter = param;
                 }
             }
 
