@@ -15,7 +15,7 @@ class Experiment3
     private static final int NUMRUNS = 20;
     private static final double CONF_LEVEL = 0.95;
     private static final int LOGGING_FREQUENCY = 5000;//ms
-    private static final int NUMBER_OF_THREAD = 1;
+    private static final int NUMBER_OF_THREAD = 22;
 
     public static void main(String[] args)
     {
@@ -169,9 +169,9 @@ class RunnableAgent2 implements Runnable {
                         param = bestResult.param;
                         hasImproved = true;
                     }
-                    if(Thread.currentThread().getName().equals("Agent0")) {
-                        System.out.println(Thread.currentThread().getName() + " get score for " + param + "s="+paramScore);
-                    }
+//                    if(Thread.currentThread().getName().equals("Agent0")) {
+//                        System.out.println(Thread.currentThread().getName() + " get score for " + param + " s="+paramScore);
+//                    }
                 }
             }
             //Parameter cannot be improved anymore with single increments
