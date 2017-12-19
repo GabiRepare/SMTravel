@@ -20,7 +20,7 @@ public class AfterCallWorkTime extends SequelActivity{
 
     @Override
     protected double duration() {
-        return model.rvp.uAfterCallWorkTime(call.uSubject);
+        return model.rvp.uAfterCallWorkTime(call.uSubject, operatorType);
     }
 
     @Override

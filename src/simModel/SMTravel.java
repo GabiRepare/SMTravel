@@ -72,30 +72,10 @@ public class SMTravel extends AOSimulationModel
     }
 
     /************  Implementation of Data Modules***********/
-    /*
-     * TODO: Testing preconditions
-     */
+
     protected void testPreconditions(Behaviour behObj)
     {
         reschedule (behObj);
-//        if(EnterCardNumber.precondition(this) == true)
-//        {
-//            EnterCardNumber enterAccount = new EnterCardNumber(this);
-//            enterAccount.startingEvent();
-//            scheduleActivity(enterAccount);
-//        }
-//        else
-//        {
-//            qWaitLines[Constants.REGULAR].add(icCall);
-//        }
-//        // Check preconditions of Conditional Activities
-//        if (TalkToOperator.precondition(this) == true)
-//        {
-//            TalkToOperator serviceCall = new TalkToOperator(this);
-//            serviceCall.startingEvent();
-//            scheduleActivity(serviceCall);
-//        }
-//        // Check preconditions of Interruptions in Extended Activities
     }
 
     public void eventOccured()

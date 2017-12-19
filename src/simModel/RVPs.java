@@ -92,8 +92,8 @@ class RVPs
         return type;
     }
 
-    double uServiceTime(int subject, int operatorType){
-        double serviceTime = dmServiceTime[subject].next();
+    double uServiceTime(int callSubject, int operatorType){
+        double serviceTime = dmServiceTime[callSubject].next();
         if (operatorType == Constants.SILVER){
             serviceTime *= Constants.SILVER_OPERATOR_REDUCTION;
         } else if (operatorType == Constants.GOLD) {
@@ -102,8 +102,14 @@ class RVPs
         return serviceTime;
     }
 
-    double uAfterCallWorkTime(int callType) {
-        return dmAfterCallTime[callType].nextDouble();
+    double uAfterCallWorkTime(int callSubject, int operatorType) {
+        double afterCallTime = dmAfterCallTime[callSubject].nextDouble();
+        if (operatorType == Constants.SILVER){
+            afterCallTime *= Constants.SILVER_OPERATOR_REDUCTION;
+        } else if (operatorType == Constants.GOLD) {
+            afterCallTime *= Constants.GOLD_OPERATOR_REDUCTION;
+        }
+        return afterCallTime;
     }
 
     double uToleratedWaitTime(int callType) {
