@@ -11,6 +11,7 @@ import simulationModelling.SequelActivity;
 // The Simulation model Class
 public class SMTravel extends AOSimulationModel
 {
+    private boolean traceFlag;
     // Constants available from Constants class
     /* Parameter */
         // Define the parameters
@@ -20,17 +21,11 @@ public class SMTravel extends AOSimulationModel
     Operators[] rgOperators = new Operators[3];
     Queue[] qWaitLines = new Queue[3];
 
-
-    // Define the reference variables to the various
-    // entities with scope Set and Unary
-    // Objects can be created here or in the Initialise Action
-
     /* Input Variables */
     // Define any Independent Input Varaibles here
 
     // References to RVP and DVP objects
     RVPs rvp;  // Reference to rvp object - object created in constructor
-    //protected DVPs dvp = new DVPs(this);  // Reference to dvp object
     UDPs udp = new UDPs(this);
     // Output object
     Output output = new Output();
@@ -39,7 +34,7 @@ public class SMTravel extends AOSimulationModel
     // required for experimentation.
 
     public SMTravel(double t0time, double tftime, int[][] schedule, int numTrunkLine,
-                    int numReservedLine, Seeds sd)
+                    int numReservedLine, Seeds sd, boolean traceFlag)
     {
         // Initialise parameters here
         qWaitLines[0] = new LinkedList<Call>();
@@ -69,6 +64,12 @@ public class SMTravel extends AOSimulationModel
         scheduleAction(arrCardholder);
         // Schedule other scheduled actions and acitvities here
 
+        this.traceFlag = traceFlag;
+    }
+
+    public SMTravel(double t0time, double tftime, int[][] schedule, int numTrunkLine,
+                    int numReservedLine, Seeds sd) {
+        this(t0time, tftime, schedule, numTrunkLine, numReservedLine, sd, false);
     }
 
     /************  Implementation of Data Modules***********/
@@ -80,13 +81,21 @@ public class SMTravel extends AOSimulationModel
 
     public void eventOccured()
     {
-        //this.showSBL();
-        // Can add other debug code to monitor the status of the system
-        // See examples for suggestions on setup logging
-
-        // Setup an updateTrjSequences() method in the Output class
-        // and call here if you have Trajectory Sets
-        // updateTrjSequences()
+        if(traceFlag) {
+            System.out.printf("Clock: %-9.3f RG.TrunkLines.numTrunkLineInUse: %d\n",
+                    getClock(), rgTrunkLines.numTrunkLineInUse);
+            System.out.printf("Q.WaitLines[REGULAR].n: %d Q.WaitLines[SILVER].n: %d Q.WaitLines[GOLD].n %d\n",
+                    qWaitLines[Constants.REGULAR].size(),
+                    qWaitLines[Constants.SILVER].size(),
+                    qWaitLines[Constants.GOLD].size());
+            System.out.printf("RG.Operators[REGULAR].numFreeOperators: %d\n",
+                    rgOperators[Constants.REGULAR].numFreeOperators);
+            System.out.printf("RG.Operators[SILVER].numFreeOperators:  %d\n",
+                    rgOperators[Constants.SILVER].numFreeOperators);
+            System.out.printf("RG.Operators[GOLD].numFreeOperators:    %d\n",
+                    rgOperators[Constants.GOLD].numFreeOperators);
+            this.showSBL();
+        }
     }
 
     // Standard Procedure to start Sequel Activities with no parameters

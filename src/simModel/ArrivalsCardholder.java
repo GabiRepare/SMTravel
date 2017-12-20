@@ -17,14 +17,16 @@ class ArrivalsCardholder extends ScheduledAction {
     @Override
     protected void actionEvent() {
         // Arrival Action Sequence SCS
-        Call icCall = new Call();
-        icCall.uType = model.rvp.uCardholderType();
-        icCall.uSubject = model.rvp.uCallSubject();
-        icCall.uToleratedWaitTime = model.rvp.uToleratedWaitTime(icCall.uType);
         model.output.numCallReceivedCardholder++;
-        CallHangUp hgUp = new CallHangUp(model, icCall);
-        model.scheduleAction(hgUp);
-        EnterCardNumber cardAct = new EnterCardNumber(model, icCall);
-        model.spStart(cardAct);
+        if(model.udp.callReceived(Constants.CARDHOLDER)) {
+            Call icCall = new Call();
+            icCall.uType = model.rvp.uCardholderType();
+            icCall.uSubject = model.rvp.uCallSubject();
+            icCall.uToleratedWaitTime = model.rvp.uToleratedWaitTime(icCall.uType);
+            CallHangUp hgUp = new CallHangUp(model, icCall);
+            model.scheduleAction(hgUp);
+            EnterCardNumber cardAct = new EnterCardNumber(model, icCall);
+            model.spStart(cardAct);
+        }
     }
 }

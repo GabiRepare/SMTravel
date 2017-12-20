@@ -26,6 +26,6 @@ public class AfterCallWorkTime extends SequelActivity{
     @Override
     protected void terminatingEvent() {
         model.rgOperators[operatorType].numFreeOperators++;
-        model.udp.TryMatchCallOperator();
+        model.udp.tryMatchCallOperator();
     }
 }

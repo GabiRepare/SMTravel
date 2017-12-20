@@ -12,8 +12,8 @@ class UDPs {
 
 
     // Translate User Defined Procedures into methods
-    private int TrunkLineReadyToAcceptCall(Call call) {
-        if (call.uType == Constants.REGULAR) {
+    private int trunkLineReadyToAcceptCall(int callType) {
+        if (callType == Constants.REGULAR) {
             return Math.max(
                     (model.rgTrunkLines.numTrunkLine
                             - model.rgTrunkLines.numTrunkLineInUse
@@ -23,35 +23,40 @@ class UDPs {
             return model.rgTrunkLines.numTrunkLine - model.rgTrunkLines.numTrunkLineInUse;
     }
 
-    void CallRegistration(Call call) {
-        int numAvailableTrunkLine = TrunkLineReadyToAcceptCall(call);
+    boolean callReceived(int callType) {
+        int numAvailableTrunkLine = trunkLineReadyToAcceptCall(callType);
         if (numAvailableTrunkLine > 0)
         {
             model.rgTrunkLines.numTrunkLineInUse++;
             if (model.rgTrunkLines.numTrunkLineInUse > model.output.maxTrunkLineUsed){
                 model.output.maxTrunkLineUsed = model.rgTrunkLines.numTrunkLineInUse;
             }
-            call.startWaitTime = model.getClock();
-            model.qWaitLines[call.uType].add(call);
-            model.output.numWait[call.uType]++;
-            TryMatchCallOperator();
+            return true;
         } else {
-            if (call.uType == Constants.REGULAR) {
+            if (callType == Constants.REGULAR) {
                 model.output.numBusySignalRegular++;
             } else { //CARDHOLDER
                 model.output.numBusySignalCardholder++;
             }
+            return false;
         }
     }
 
-    void ProcessingStaffChange() {
+    void enqueueCall (Call call) {
+        call.startWaitTime = model.getClock();
+        model.qWaitLines[call.uType].add(call);
+        model.output.numWait[call.uType]++;
+        tryMatchCallOperator();
+    }
+
+    void processingStaffChange() {
         for (int i = 0; i < 9; i++){
             if (model.getClock() == Constants.STAFF_CHANGE_TIME_SEQ[i]){
                 int shift = i % 5;
                 if (i < 5) { //Shift beginning
                     for (int opType = 0; opType < 3; opType++){
                         model.rgOperators[opType].numFreeOperators += model.rgOperators[opType].schedule[shift];
-                        TryMatchCallOperator();
+                        tryMatchCallOperator();
                     }
                 } else { //Shift ending
                     for (int opType = 0; opType < 3; opType++){
@@ -62,13 +67,13 @@ class UDPs {
         }
     }
 
-    void CheckForLongWait(Call call) {
+    void checkForLongWait(Call call) {
         if (model.getClock() - call.startWaitTime > Constants.LONG_WAIT_THRESHOLD[call.uType]){
             model.output.numLongWait[call.uType]++;
         }
     }
 
-    void TryMatchCallOperator() {
+    void tryMatchCallOperator() {
         int callType = -1;
         int operatorType = -1;
 

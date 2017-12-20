@@ -20,7 +20,7 @@ public class EnterCardNumber extends SequelActivity{
     }
     @Override
     protected void terminatingEvent(){
-        model.udp.CallRegistration(call);
+        model.udp.enqueueCall(call);
     }
 }
 

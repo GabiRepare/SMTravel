@@ -8,6 +8,7 @@ class Experiment
 {
     private static final int NUMRUNS = 20;
     private static final double CONF_LEVEL = 0.95;
+    private static final boolean TRACE_FLAG = false;
 
     public static void main(String[] args)
     {
@@ -50,7 +51,7 @@ class Experiment
             int numTrunkLine = 60;
             int numReservedLine = 4;
             mname = new SMTravel(startTime, endTime, schedule, numTrunkLine,
-                    numReservedLine,sds[i]);
+                    numReservedLine,sds[i], TRACE_FLAG);
             mname.runSimulation();
 
             //Collect output

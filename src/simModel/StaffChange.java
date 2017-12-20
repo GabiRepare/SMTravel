@@ -17,6 +17,6 @@ class StaffChange extends ScheduledAction {
     }
 
     protected void actionEvent() {
-        model.udp.ProcessingStaffChange();
+        model.udp.processingStaffChange();
     }
 }

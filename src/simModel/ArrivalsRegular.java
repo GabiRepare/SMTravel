@@ -17,14 +17,16 @@ class ArrivalsRegular extends ScheduledAction
     @Override
     protected void actionEvent() {
         // Arrival Action Sequence SCS
-        Call icCall  = new Call();
-        icCall.uType = Constants.REGULAR;
-        icCall.uSubject = model.rvp.uCallSubject();
-        icCall.uToleratedWaitTime = model.rvp.uToleratedWaitTime(Constants.REGULAR);
-        CallHangUp hgUp = new CallHangUp(model, icCall);
-        model.scheduleAction(hgUp);
         model.output.numCallReceivedRegular++;
-        model.udp.CallRegistration(icCall);
+        if(model.udp.callReceived(Constants.REGULAR)) {
+            Call icCall = new Call();
+            icCall.uType = Constants.REGULAR;
+            icCall.uSubject = model.rvp.uCallSubject();
+            icCall.uToleratedWaitTime = model.rvp.uToleratedWaitTime(Constants.REGULAR);
+            CallHangUp hgUp = new CallHangUp(model, icCall);
+            model.scheduleAction(hgUp);
+            model.udp.enqueueCall(icCall);
+        }
     }
 
 }

@@ -24,7 +24,7 @@ class CallHangUp extends ScheduledAction{
     {
         if (model.qWaitLines[call.uType].contains(call)) {
             //Call Hangup action sequence
-            model.udp.CheckForLongWait(call);
+            model.udp.checkForLongWait(call);
             model.qWaitLines[call.uType].remove(call);
             model.rgTrunkLines.numTrunkLineInUse--;
         }

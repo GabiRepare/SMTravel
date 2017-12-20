@@ -16,7 +16,7 @@ class TalkToOperator extends SequelActivity {
 
     public void startingEvent(){
         call = (Call)model.qWaitLines[callType].poll();
-        model.udp.CheckForLongWait(call);
+        model.udp.checkForLongWait(call);
         model.rgOperators[operatorType].numFreeOperators--;
     }
 
