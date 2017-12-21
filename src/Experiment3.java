@@ -15,7 +15,7 @@ class Experiment3
     private static final int NUMRUNS = 20;
     private static final double CONF_LEVEL = 0.95;
     private static final int LOGGING_FREQUENCY = 5000;//ms
-    private static final int NUMBER_OF_THREAD = 22;
+    private static final int NUMBER_OF_THREAD = 4;
 
     public static void main(String[] args)
     {

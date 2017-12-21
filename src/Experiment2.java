@@ -31,15 +31,15 @@ class Experiment2
         //The range  of values from zero to test for each parameter of the schedule
         //Note: all tested values are strictly smaller than the specified range value
         int[][] scheduleRange = {
-                {10,10,10,10,10}, //REGULAR
-                {6, 6, 6, 6, 6 }, //SILVER
-                {6, 6, 6, 6, 6 }  //GOLD
+                {30,30,30,30,30}, //REGULAR
+                {12,12,12,12,12}, //SILVER
+                {12,12,12,12,12}  //GOLD
         };
         //This is 6046617600000 possibilities
 
         //Closest prime is 6046617600013
-        BigInteger m = BigInteger.valueOf(6046617600013L);
-        BigInteger a = BigInteger.valueOf(47055833479L); //Random prime in range
+        BigInteger m = BigInteger.valueOf(1504591950643200031L);
+        BigInteger a = BigInteger.valueOf(1504591950623200007L); //Random prime in range
         BigInteger b = BigInteger.valueOf(0);
         BigInteger seed = BigInteger.valueOf(1);
 
